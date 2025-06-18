@@ -43,8 +43,6 @@
                                     <th width="5%">No</th>
                                     <th width="15%">Kode</th>
                                     <th width="25%">Nama Kategori</th>
-                                    <th width="35%">Deskripsi</th>
-                                    <th width="10%">Status</th>
                                     <th width="10%">Aksi</th>
                                 </tr>
                             </thead>
@@ -54,14 +52,7 @@
                                         <td>{{ $kategoriSurat->firstItem() + $index }}</td>
                                         <td><span class="badge bg-secondary">{{ $kategori->kode_kategori }}</span></td>
                                         <td>{{ $kategori->nama_kategori }}</td>
-                                        <td>{{ $kategori->keterangan ?? '-' }}</td>
-                                        <td>
-                                            @if($kategori->status)
-                                                <span class="badge bg-success">Aktif</span>
-                                            @else
-                                                <span class="badge bg-danger">Nonaktif</span>
-                                            @endif
-                                        </td>
+                                     
                                         <td>
                                             <div class="btn-group" role="group">
                                                 <a href="{{ route('kategori-surat.edit', $kategori->id) }}" class="btn btn-sm btn-warning" title="Edit">
