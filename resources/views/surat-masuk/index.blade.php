@@ -48,7 +48,7 @@
                                     <th>Sifat</th>
                                     <th>Penerima</th>
                                     <th>Status</th>
-                                    <th width="15%">Aksi</th>
+                                    <th width="10%">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

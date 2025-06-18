@@ -21,38 +21,9 @@ class SuratMasukController extends Controller
             $cari = $request->cari;
             $query->where(function($q) use ($cari) {
                 $q->where('nomor_surat', 'like', "%{$cari}%")
-                  ->orWhere('asal_surat', 'like', "%{$cari}%")
-                  ->orWhere('perihal', 'like', "%{$cari}%")
                   ->orWhere('nomor_agenda', 'like', "%{$cari}%");
             });
         }
-        
-        // Filter berdasarkan kategori
-        if ($request->filled('kategori')) {
-            $query->where('kategori_id', $request->kategori);
-        }
-        
-        // Filter berdasarkan status
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-        
-        // Filter berdasarkan sifat surat
-        if ($request->filled('sifat_surat')) {
-            $query->where('sifat_surat', $request->sifat_surat);
-        }
-        
-        // Filter berdasarkan rentang tanggal
-        if ($request->filled('tanggal_mulai')) {
-            $query->whereDate('tanggal_diterima', '>=', $request->tanggal_mulai);
-        }
-        
-        if ($request->filled('tanggal_selesai')) {
-            $query->whereDate('tanggal_diterima', '<=', $request->tanggal_selesai);
-        }
-        
-        // Urutkan berdasarkan tanggal diterima terbaru
-        $query->orderBy('tanggal_diterima', 'desc');
         
         $surat_masuk = $query->paginate(10);
         $kategori = KategoriSurat::all();
