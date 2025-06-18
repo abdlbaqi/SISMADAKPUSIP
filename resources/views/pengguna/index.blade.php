@@ -15,7 +15,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($penggunas as $pengguna)
+            @foreach ($pengguna as $pengguna)
             <tr>
                 <td>{{ $pengguna->nama }}</td>
                 <td>{{ $pengguna->email }}</td>
