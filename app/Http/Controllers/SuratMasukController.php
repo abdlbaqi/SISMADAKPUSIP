@@ -81,16 +81,12 @@ class SuratMasukController extends Controller
         $validatedData = $request->validate([
             'nomor_agenda' => 'required|string|unique:surat_masuk,nomor_agenda',
             'nomor_surat' => 'required|string|max:255',
-            'asal_surat' => 'required|string|max:255',
             'perihal' => 'required|string|max:255',
             'tanggal_surat' => 'required|date',
             'tanggal_diterima' => 'required|date',
             'kategori_id' => 'required|exists:kategori_surat,id',
             'sifat_surat' => 'required|in:biasa,penting,segera,rahasia',
-            'lampiran' => 'nullable|string|max:255',
-            'isi_ringkas' => 'nullable|string',
             'penerima_id' => 'nullable|exists:pengguna,id',
-            'catatan' => 'nullable|string',
             'file_surat' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120', // 5MB
         ]);
 

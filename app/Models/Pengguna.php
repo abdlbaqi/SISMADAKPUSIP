@@ -15,22 +15,20 @@ class Pengguna extends Authenticatable
     protected $fillable = [
         'nama',
         'email',
-        'password',
+        'kata_sandi',
         'jabatan',
         'unit_kerja',
-        'peran',
-        'aktif'
+        'peran'
     ];
 
     protected $hidden = [
-        'password',
+        'kata_sandi',
         'remember_token',
     ];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'aktif' => 'boolean',
-        'password' => 'hashed',
+        'kata_sandi' => 'hashed'
     ];
 
     /**
@@ -55,14 +53,6 @@ class Pengguna extends Authenticatable
     public function getNamaLengkapAttribute()
     {
         return $this->nama . ($this->jabatan ? ' - ' . $this->jabatan : '');
-    }
-
-    /**
-     * Scope untuk pengguna aktif
-     */
-    public function scopeAktif($query)
-    {
-        return $query->where('aktif', true);
     }
 
     /**

@@ -39,14 +39,14 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th width="5%">No</th>
+                                    <th width="3%">No</th>
                                     <th>No. Agenda</th>
                                     <th>No. Surat</th>
-                                    <th>Asal Surat</th>
                                     <th>Perihal</th>
-                                    <th>Kategori</th>
+                                    <th>Kategori Surat</th>
                                     <th>Tanggal Diterima</th>
                                     <th>Sifat</th>
+                                    <th>Penerima</th>
                                     <th>Status</th>
                                     <th width="15%">Aksi</th>
                                 </tr>
@@ -57,7 +57,6 @@
                                         <td>{{ $surat_masuk->firstItem() + $index }}</td>
                                         <td>{{ $surat->nomor_agenda }}</td>
                                         <td>{{ $surat->nomor_surat }}</td>
-                                        <td>{{ $surat->asal_surat }}</td>
                                         <td>{{ Str::limit($surat->perihal, 50) }}</td>
                                         <td>
                                             <span class="badge badge-info text-dark">{{ $surat->kategori->nama_kategori ?? '-' }}</span>
@@ -79,6 +78,11 @@
                                                     @break
                                             @endswitch
                                         </td>
+
+                                            <td>
+                                                {{$surat->penerima->nama}}
+                                           </td>
+
                                         <td>
                                             @if($surat->status === 'belum_dibaca')
                                                 <span class="badge badge-warning text-dark">Belum Dibaca</span>
@@ -86,6 +90,7 @@
                                                 <span class="badge badge-success text-dark">Sudah Dibaca</span>
                                             @endif
                                         </td>
+                
                                         <td>
                                             <div class="btn-group" role="group">
                                                 <a href="{{ route('surat-masuk.show', $surat) }}" 

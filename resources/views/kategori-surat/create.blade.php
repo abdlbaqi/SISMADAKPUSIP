@@ -60,27 +60,10 @@
                                       rows="4"
                                       maxlength="1000"
                                       placeholder="Deskripsi kategori surat (opsional)">{{ old('keterangan') }}</textarea>
-                            @error('deskripsi')
+                            @error('keterangan')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                             <div class="form-text">Maksimal 1000 karakter</div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="status" class="form-label">
-                                Status <span class="text-danger">*</span>
-                            </label>
-                            <select class="form-select @error('status') is-invalid @enderror" 
-                                    id="status" 
-                                    name="status" 
-                                    required>
-                                <option value="">Pilih Status</option>
-                                <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Aktif</option>
-                                <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Nonaktif</option>
-                            </select>
-                            @error('status')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
                         </div>
 
                         <div class="d-flex justify-content-between">

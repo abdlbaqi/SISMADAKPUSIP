@@ -75,15 +75,6 @@
                                             @enderror
                                         </div>
 
-                                        <div class="mb-3">
-                                            <label for="asal_surat" class="form-label">Asal Surat <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control @error('asal_surat') is-invalid @enderror" 
-                                                   id="asal_surat" name="asal_surat" 
-                                                   value="{{ old('asal_surat') }}" required>
-                                            @error('asal_surat')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
 
                                         <div class="mb-3">
                                             <label for="tanggal_surat" class="form-label">Tanggal Surat <span class="text-danger">*</span></label>
