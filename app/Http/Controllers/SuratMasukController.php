@@ -104,17 +104,12 @@ class SuratMasukController extends Controller
         $validatedData = $request->validate([
             'nomor_agenda' => 'required|string|unique:surat_masuk,nomor_agenda,' . $suratMasuk->id,
             'nomor_surat' => 'required|string|max:255',
-            'asal_surat' => 'required|string|max:255',
             'perihal' => 'required|string|max:255',
             'tanggal_surat' => 'required|date',
             'tanggal_diterima' => 'required|date',
             'kategori_id' => 'required|exists:kategori_surat,id',
             'sifat_surat' => 'required|in:biasa,penting,segera,rahasia',
-            'lampiran' => 'nullable|string|max:255',
-            'isi_ringkas' => 'nullable|string',
-            'status' => 'required|in:belum_dibaca,sudah_dibaca,diproses,selesai',
             'penerima_id' => 'nullable|exists:pengguna,id',
-            'catatan' => 'nullable|string',
             'file_surat' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120', // 5MB
         ]);
 
@@ -150,14 +145,22 @@ class SuratMasukController extends Controller
                         ->with('sukses', 'Surat masuk berhasil dihapus');
     }
 
-    public function unduhFile(SuratMasuk $suratMasuk)
-    {
-        if (!$suratMasuk->file_surat || !Storage::disk('public')->exists($suratMasuk->file_surat)) {
-            return redirect()->back()->with('error', 'File tidak ditemukan');
-        }
+    
+public function unduhFile(SuratMasuk $suratMasuk)
+{
+    // Cegah double "surat-masuk/"
+    $file = $suratMasuk->file_surat;
+    $file = str_replace('surat-masuk/', '', $file);
 
-        return Storage::disk('public')->download($suratMasuk->file_surat);
+    $path = 'surat-masuk/' . $file;
+
+    if (!Storage::disk('public')->exists($path)) {
+        return back()->with('error', 'File tidak ditemukan di: ' . $path);
     }
+
+    return Storage::disk('public')->download($path);
+}
+
 
     public function updateStatus(Request $request, SuratMasuk $suratMasuk)
     {
