@@ -2,11 +2,9 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class Pengguna extends Authenticatable
 {
@@ -17,54 +15,61 @@ class Pengguna extends Authenticatable
     protected $fillable = [
         'nama',
         'email',
-        'kata_sandi',
-        'peran',
+        'password',
         'jabatan',
-        'unit_kerja'
+        'unit_kerja',
+        'peran',
+        'aktif'
     ];
 
     protected $hidden = [
-        'kata_sandi',
+        'password',
         'remember_token',
     ];
 
-    public function getAuthPassword()
-    {
-        return $this->kata_sandi;
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'aktif' => 'boolean',
+        'password' => 'hashed',
+    ];
 
-    public function suratMasukDibuat()
-    {
-        return $this->hasMany(SuratMasuk::class, 'dibuat_oleh');
-    }
-
-    public function suratMasukDiterima()
+    /**
+     * Relationship dengan SuratMasuk sebagai penerima
+     */
+    public function suratMasukSebagaiPenerima()
     {
         return $this->hasMany(SuratMasuk::class, 'penerima_id');
     }
 
-    public function suratKeluarDibuat()
+    /**
+     * Relationship dengan SuratMasuk sebagai pembuat
+     */
+    public function suratMasukSebagaiPembuat()
     {
-        return $this->hasMany(SuratKeluar::class, 'pembuat_id');
+        return $this->hasMany(SuratMasuk::class, 'dibuat_oleh');
     }
 
-    public function suratKeluarDisetujui()
+    /**
+     * Accessor untuk nama lengkap dengan jabatan
+     */
+    public function getNamaLengkapAttribute()
     {
-        return $this->hasMany(SuratKeluar::class, 'penyetuju_id');
+        return $this->nama . ($this->jabatan ? ' - ' . $this->jabatan : '');
     }
 
-    public function disposisiDikirim()
+    /**
+     * Scope untuk pengguna aktif
+     */
+    public function scopeAktif($query)
     {
-        return $this->hasMany(Disposisi::class, 'dari_pengguna_id');
+        return $query->where('aktif', true);
     }
 
-    public function disposisiDiterima()
+    /**
+     * Scope untuk filter berdasarkan role
+     */
+    public function scopeByRole($query, $role)
     {
-        return $this->hasMany(Disposisi::class, 'kepada_pengguna_id');
-    }
-
-    public function arsipDibuat()
-    {
-        return $this->hasMany(Arsip::class, 'diarsipkan_oleh');
+        return $query->where('role', $role);
     }
 }

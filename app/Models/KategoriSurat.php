@@ -14,21 +14,27 @@ class KategoriSurat extends Model
     protected $fillable = [
         'nama_kategori',
         'kode_kategori',
-        'keterangan'
+        'keterangan',
+        'aktif'
     ];
 
+    protected $casts = [
+        'aktif' => 'boolean',
+    ];
+
+    /**
+     * Relationship dengan SuratMasuk
+     */
     public function suratMasuk()
     {
         return $this->hasMany(SuratMasuk::class, 'kategori_id');
     }
 
-    public function suratKeluar()
+    /**
+     * Scope untuk kategori aktif
+     */
+    public function scopeAktif($query)
     {
-        return $this->hasMany(SuratKeluar::class, 'kategori_id');
-    }
-
-    public function arsip()
-    {
-        return $this->hasMany(Arsip::class, 'kategori_id');
+        return $query->where('aktif', true);
     }
 }
