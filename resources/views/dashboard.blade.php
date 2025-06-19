@@ -47,21 +47,6 @@
         </div>
     </div>
 
-    <div class="col-md-3 mb-4">
-        <div class="card text-white bg-info">
-            <div class="card-body d-flex justify-content-between">
-                <div>
-                    <h5 class="card-title">Arsip</h5>
-                    <h2 class="mb-0">{{ $jumlahArsip }}</h2>
-                </div>
-                <div class="align-self-center">
-                    <i class="fas fa-archive fa-2x"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 {{-- Daftar Surat Terbaru --}}
 <div class="row">
     <div class="col-md-6">

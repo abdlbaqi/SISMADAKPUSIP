@@ -37,8 +37,7 @@ class KategoriSuratController extends Controller
         $validated = $request->validate([
             'nama_kategori' => 'required|string|max:255|unique:kategori_surat,nama_kategori',
             'kode_kategori' => 'required|string|max:10|unique:kategori_surat,kode_kategori',
-            'deskripsi' => 'nullable|string|max:1000',
-            'status' => 'required|boolean'
+
         ]);
 
         KategoriSurat::create($validated);
@@ -71,8 +70,7 @@ class KategoriSuratController extends Controller
         $validated = $request->validate([
             'nama_kategori' => 'required|string|max:255|unique:kategori_surat,nama_kategori,' . $kategoriSurat->id,
             'kode_kategori' => 'required|string|max:10|unique:kategori_surat,kode_kategori,' . $kategoriSurat->id,
-            'deskripsi' => 'nullable|string|max:1000',
-            'status' => 'required|boolean'
+           
         ]);
 
         $kategoriSurat->update($validated);

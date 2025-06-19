@@ -47,31 +47,41 @@
                         <dt class="col-sm-3">Tanggal Diterima</dt>
                         <dd class="col-sm-9">{{ $suratMasuk->tanggal_diterima }}</dd>
 
-                        <dt class="col-sm-3">Kategori</dt>
+                        <dt class="col-sm-3">Jenis Surat</dt>
                         <dd class="col-sm-9">{{ $suratMasuk->kategori->nama_kategori ?? '-' }}</dd>
-
-                        <dt class="col-sm-3">Perihal</dt>
-                        <dd class="col-sm-9">{{ $suratMasuk->perihal }}</dd>
 
                         <dt class="col-sm-3">Sifat Surat</dt>
                         <dd class="col-sm-9 text-capitalize">{{ $suratMasuk->sifat_surat }}</dd>
 
-                        <dt class="col-sm-3">Penerima</dt>
-                        <dd class="col-sm-9">
-                            {{ $suratMasuk->penerima->nama ?? '-' }} 
-                            ({{ $suratMasuk->penerima->jabatan ?? $suratMasuk->penerima->email }})
-                        </dd>
+                        <dt class="col-sm-3">Hal</dt>
+                        <dd class="col-sm-9">{{ $suratMasuk->perihal }}</dd>
+
+                        <dt class="col-sm-3">Isi Ringkas</dt>
+                        <dd class="col-sm-9">{{ $suratMasuk->isi_ringkas ?? '-' }}</dd>
+
+                        <dt class="col-sm-3">Asal Surat</dt>
+                        <dd class="col-sm-9">{{ $suratMasuk->asal_surat }}</dd>
+
+                        <dt class="col-sm-3">Nama Pengirim</dt>
+                        <dd class="col-sm-9">{{ $suratMasuk->nama_pengirim }}</dd>
+
+                        <dt class="col-sm-3">Jabatan Pengirim</dt>
+                        <dd class="col-sm-9">{{ $suratMasuk->jabatan_pengirim }}</dd>
+
+                        <dt class="col-sm-3">Instansi Pengirim</dt>
+                        <dd class="col-sm-9">{{ $suratMasuk->instansi_pengirim }}</dd>
 
                         <dt class="col-sm-3">Keterangan</dt>
                         <dd class="col-sm-9">{{ $suratMasuk->keterangan ?? '-' }}</dd>
 
+
                         <dt class="col-sm-3">File Surat</dt>
                         <dd class="col-sm-9">
                             @if($suratMasuk->file_surat)
-                               <a href="{{ route('surat-masuk.unduh-file', $suratMasuk->id) }}" class="btn btn-sm btn-primary" target="_blank">
+                                <a href="{{ route('surat-masuk.unduh-file', $suratMasuk->id) }}" 
+                                   class="btn btn-sm btn-primary" target="_blank">
                                     <i class="fas fa-file-download"></i> Unduh File
                                 </a>
-
                             @else
                                 <span class="text-muted">Tidak ada file</span>
                             @endif

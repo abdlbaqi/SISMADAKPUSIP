@@ -60,4 +60,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/laporan/surat-keluar', [LaporanController::class, 'suratKeluar'])->name('laporan.surat-keluar');
     Route::get('/laporan/disposisi', [LaporanController::class, 'disposisi'])->name('laporan.disposisi');
     Route::get('/laporan/arsip', [LaporanController::class, 'arsip'])->name('laporan.arsip');
+
+
+    // Surat Masuk
+Route::get('/surat-masuk/arsip', [SuratMasukController::class, 'arsip'])->name('surat-masuk.arsip');
+
+// Surat Keluar  
+Route::get('/surat-keluar/arsip', [SuratKeluarController::class, 'arsip'])->name('surat-keluar.arsip');
+
+// Laporan
+Route::get('/laporan/surat-masuk', [LaporanController::class, 'suratMasuk'])->name('laporan.surat-masuk');
+Route::get('/laporan/surat-keluar', [LaporanController::class, 'suratKeluar'])->name('laporan.surat-keluar');
+
+// Profil
+Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
 });

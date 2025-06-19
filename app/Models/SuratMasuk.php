@@ -11,23 +11,25 @@ class SuratMasuk extends Model
 
     protected $table = 'surat_masuk';
 
-    protected $fillable = [
-        'nomor_agenda',
-        'nomor_surat',
-        'asal_surat',
-        'perihal',
-        'tanggal_surat',
-        'tanggal_diterima',
-        'kategori_id',
-        'sifat_surat',
-        'lampiran',
-        'isi_ringkas',
-        'file_surat',
-        'status',
-        'penerima_id',
-        'catatan',
-        'dibuat_oleh'
-    ];
+  protected $fillable = [
+    'nama_pengirim',
+    'jabatan_pengirim',
+    'instansi_pengirim',
+    'nomor_agenda',
+    'nomor_surat',
+    'asal_surat',
+    'perihal',
+    'isi_ringkas',
+    'tanggal_surat',
+    'tanggal_diterima',
+    'kategori_id',
+    'sifat_surat',
+    'keterangan',
+    'file_surat',
+    'status',
+    'dibuat_oleh',
+];
+
 
     protected $casts = [
         'tanggal_surat' => 'date',

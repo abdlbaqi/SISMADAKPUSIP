@@ -40,9 +40,7 @@
                             @method('PUT')
                             <div class="card-body">
                                 @if($errors->any())
-                                    <div class="alert alert-danger alert-dismissible">
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                        <h5><i class="icon fas fa-ban"></i> Terjadi Kesalahan!</h5>
+                                    <div class="alert alert-danger">
                                         <ul class="mb-0">
                                             @foreach($errors->all() as $error)
                                                 <li>{{ $error }}</li>
@@ -52,157 +50,117 @@
                                 @endif
 
                                 <div class="row">
-                                    <!-- Kolom Kiri -->
+                                    <!-- Kiri -->
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="nomor_agenda" class="form-label">Nomor Agenda</label>
-                                            <input type="text" class="form-control" 
-                                                   id="nomor_agenda" name="nomor_agenda" 
-                                                   value="{{ $suratMasuk->nomor_agenda }}" readonly>
+                                            <label for="nomor_agenda">Nomor Agenda</label>
+                                            <input type="text" class="form-control" name="nomor_agenda" value="{{ $suratMasuk->nomor_agenda }}" readonly>
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="nomor_surat" class="form-label">Nomor Surat <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control @error('nomor_surat') is-invalid @enderror" 
-                                                   id="nomor_surat" name="nomor_surat" 
-                                                   value="{{ old('nomor_surat', $suratMasuk->nomor_surat) }}" required>
-                                            @error('nomor_surat')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                            <label for="nomor_surat">Nomor Surat <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control @error('nomor_surat') is-invalid @enderror" name="nomor_surat" value="{{ old('nomor_surat', $suratMasuk->nomor_surat) }}" required>
+                                            @error('nomor_surat') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="tanggal_surat" class="form-label">Tanggal Surat <span class="text-danger">*</span></label>
-                                            <input type="date" class="form-control @error('tanggal_surat') is-invalid @enderror" 
-                                                   id="tanggal_surat" name="tanggal_surat" 
-                                                   value="{{ old('tanggal_surat', $suratMasuk->tanggal_surat) }}" required>
-                                            @error('tanggal_surat')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                            <label for="tanggal_surat">Tanggal Surat <span class="text-danger">*</span></label>
+                                            <input type="date" class="form-control @error('tanggal_surat') is-invalid @enderror" name="tanggal_surat" value="{{ old('tanggal_surat', $suratMasuk->tanggal_surat) }}" required>
+                                            @error('tanggal_surat') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="tanggal_diterima" class="form-label">Tanggal Diterima <span class="text-danger">*</span></label>
-                                            <input type="date" class="form-control @error('tanggal_diterima') is-invalid @enderror" 
-                                                   id="tanggal_diterima" name="tanggal_diterima" 
-                                                   value="{{ old('tanggal_diterima', $suratMasuk->tanggal_diterima) }}" required>
-                                            @error('tanggal_diterima')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                            <label for="tanggal_diterima">Tanggal Diterima <span class="text-danger">*</span></label>
+                                            <input type="date" class="form-control @error('tanggal_diterima') is-invalid @enderror" name="tanggal_diterima" value="{{ old('tanggal_diterima', $suratMasuk->tanggal_diterima) }}" required>
+                                            @error('tanggal_diterima') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="kategori_id" class="form-label">Kategori Surat <span class="text-danger">*</span></label>
-                                            <select name="kategori_id" id="kategori_id" class="form-select @error('kategori_id') is-invalid @enderror" required>
-                                                <option value="">Pilih Kategori</option>
-                                                @foreach ($kategori as $item)
-                                                    <option value="{{ $item->id }}" {{ old('kategori_id', $suratMasuk->kategori_id) == $item->id ? 'selected' : '' }}>
-                                                        {{ $item->nama_kategori }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            @error('kategori_id')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                            <label for="nama_pengirim">Nama Pengirim <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control @error('nama_pengirim') is-invalid @enderror" name="nama_pengirim" value="{{ old('nama_pengirim', $suratMasuk->nama_pengirim) }}" required>
+                                            @error('nama_pengirim') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="jabatan_pengirim">Jabatan Pengirim</label>
+                                            <input type="text" class="form-control @error('jabatan_pengirim') is-invalid @enderror" name="jabatan_pengirim" value="{{ old('jabatan_pengirim', $suratMasuk->jabatan_pengirim) }}">
+                                            @error('jabatan_pengirim') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="instansi_pengirim">Instansi Pengirim</label>
+                                            <input type="text" class="form-control @error('instansi_pengirim') is-invalid @enderror" name="instansi_pengirim" value="{{ old('instansi_pengirim', $suratMasuk->instansi_pengirim) }}">
+                                            @error('instansi_pengirim') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         </div>
                                     </div>
 
-                                    <!-- Kolom Kanan -->
+                                    <!-- Kanan -->
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="perihal" class="form-label">Perihal <span class="text-danger">*</span></label>
-                                            <textarea class="form-control @error('perihal') is-invalid @enderror" 
-                                                      id="perihal" name="perihal" rows="3" required>{{ old('perihal', $suratMasuk->perihal) }}</textarea>
-                                            @error('perihal')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                            <label for="asal_surat">Asal Surat</label>
+                                            <input type="text" class="form-control @error('asal_surat') is-invalid @enderror" name="asal_surat" value="{{ old('asal_surat', $suratMasuk->asal_surat) }}">
+                                            @error('asal_surat') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="sifat_surat" class="form-label">Sifat Surat <span class="text-danger">*</span></label>
-                                            <select class="form-select @error('sifat_surat') is-invalid @enderror" 
-                                                    id="sifat_surat" name="sifat_surat" required>
-                                                <option value="">Pilih Sifat Surat</option>
+                                            <label for="isi_ringkas">Isi Ringkas</label>
+                                            <textarea class="form-control @error('isi_ringkas') is-invalid @enderror" name="isi_ringkas" rows="3">{{ old('isi_ringkas', $suratMasuk->isi_ringkas) }}</textarea>
+                                            @error('isi_ringkas') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="perihal">Perihal <span class="text-danger">*</span></label>
+                                            <textarea class="form-control @error('perihal') is-invalid @enderror" name="perihal" rows="2" required>{{ old('perihal', $suratMasuk->perihal) }}</textarea>
+                                            @error('perihal') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="kategori_id">Jenis Surat <span class="text-danger">*</span></label>
+                                            <select class="form-select @error('kategori_id') is-invalid @enderror" name="kategori_id" required>
+                                                <option value="">-- Pilih Kategori --</option>
+                                                @foreach($kategori as $item)
+                                                    <option value="{{ $item->id }}" {{ old('kategori_id', $suratMasuk->kategori_id) == $item->id ? 'selected' : '' }}>{{ $item->nama_kategori }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('kategori_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="sifat_surat">Sifat Surat <span class="text-danger">*</span></label>
+                                            <select class="form-select @error('sifat_surat') is-invalid @enderror" name="sifat_surat" required>
+                                                <option value="">-- Pilih Sifat --</option>
                                                 @foreach(['biasa', 'penting', 'segera', 'rahasia'] as $sifat)
-                                                    <option value="{{ $sifat }}" {{ old('sifat_surat', $suratMasuk->sifat_surat) == $sifat ? 'selected' : '' }}>
-                                                        {{ ucfirst($sifat) }}
-                                                    </option>
+                                                    <option value="{{ $sifat }}" {{ old('sifat_surat', $suratMasuk->sifat_surat) == $sifat ? 'selected' : '' }}>{{ ucfirst($sifat) }}</option>
                                                 @endforeach
                                             </select>
-                                            @error('sifat_surat')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                            @error('sifat_surat') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="penerima_id" class="form-label">Penerima <span class="text-danger">*</span></label>
-                                            <select class="form-select @error('penerima_id') is-invalid @enderror" 
-                                                    id="penerima_id" name="penerima_id" required>
-                                                <option value="">Pilih Penerima</option>
-                                                @foreach($penerima as $user)
-                                                    <option value="{{ $user->id }}" {{ old('penerima_id', $suratMasuk->penerima_id) == $user->id ? 'selected' : '' }}>
-                                                        {{ $user->nama }} - {{ $user->jabatan ?? $user->email }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            @error('penerima_id')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                            <label for="keterangan">Keterangan</label>
+                                            <textarea class="form-control @error('keterangan') is-invalid @enderror" name="keterangan" rows="2">{{ old('keterangan', $suratMasuk->keterangan) }}</textarea>
+                                            @error('keterangan') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="keterangan" class="form-label">Keterangan</label>
-                                            <textarea class="form-control @error('keterangan') is-invalid @enderror" 
-                                                      id="keterangan" name="keterangan" rows="3">{{ old('keterangan', $suratMasuk->keterangan) }}</textarea>
-                                            @error('keterangan')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="file_surat" class="form-label">Ganti File Surat</label>
-                                            <input type="file" class="form-control @error('file_surat') is-invalid @enderror" 
-                                                   id="file_surat" name="file_surat" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
-                                            @error('file_surat')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                            <small class="form-text text-muted">
-                                                Kosongkan jika tidak ingin mengubah file. Format: PDF, DOC, JPG. Maksimal 5MB.
-                                            </small>
+                                            <label for="file_surat">Ganti File Surat</label>
+                                            <input type="file" class="form-control @error('file_surat') is-invalid @enderror" name="file_surat" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                            @error('file_surat') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                            <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah file. Maks 5MB.</small>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save"></i> Update
-                                </button>
-                                <a href="{{ route('surat-masuk.index') }}" class="btn btn-secondary">
-                                    <i class="fas fa-times"></i> Batal
-                                </a>
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update</button>
+                                <a href="{{ route('surat-masuk.index') }}" class="btn btn-secondary"><i class="fas fa-times"></i> Batal</a>
                             </div>
                         </form>
-
                     </div>
                 </div>
             </div>
         </div>
     </section>
 </div>
-
-<script>
-document.getElementById('file_surat').addEventListener('change', function(e) {
-    var fileName = e.target.files[0] ? e.target.files[0].name : 'Tidak ada file yang dipilih';
-    var fileInfo = document.createElement('small');
-    fileInfo.className = 'form-text text-info';
-    fileInfo.textContent = 'File terpilih: ' + fileName;
-
-    var existingInfo = e.target.parentNode.querySelector('.text-info');
-    if (existingInfo) {
-        existingInfo.remove();
-    }
-    e.target.parentNode.appendChild(fileInfo);
-});
-</script>
 @endsection

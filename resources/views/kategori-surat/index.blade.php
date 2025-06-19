@@ -10,7 +10,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="mb-0">
                         <i class="fas fa-folder me-2"></i>
-                        Daftar Kategori Surat
+                        Daftar Jenis Surat
                     </h4>
                     <a href="{{ route('kategori-surat.create') }}" class="btn btn-primary">
                         <i class="fas fa-plus me-1"></i>
@@ -42,7 +42,7 @@
                                 <tr>
                                     <th width="5%">No</th>
                                     <th width="15%">Kode</th>
-                                    <th width="25%">Nama Kategori</th>
+                                    <th width="25%">Jenis Surat</th>
                                     <th width="10%">Aksi</th>
                                 </tr>
                             </thead>

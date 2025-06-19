@@ -50,7 +50,62 @@
                                     </div>
                                 @endif
 
+                                <!-- Section Identitas Pengirim -->
+                                <div class="row mb-4">
+                                    <div class="col-12">
+                                        <h5 class="text-primary border-bottom pb-2 mb-3">
+                                            <i class="fas fa-user-edit"></i> Identitas Pengirim Naskah
+                                        </h5>
+                                    </div>
+                                    
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="nama_pengirim" class="form-label">Nama Pengirim <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control @error('nama_pengirim') is-invalid @enderror" 
+                                                   id="nama_pengirim" name="nama_pengirim" 
+                                                   value="{{ old('nama_pengirim') }}" required
+                                                   placeholder="Masukkan nama lengkap pengirim">
+                                            @error('nama_pengirim')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="jabatan_pengirim" class="form-label">Jabatan Pengirim <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control @error('jabatan_pengirim') is-invalid @enderror" 
+                                                   id="jabatan_pengirim" name="jabatan_pengirim" 
+                                                   value="{{ old('jabatan_pengirim') }}" required
+                                                   placeholder="Contoh: Kepala Dinas, Sekretaris, dll">
+                                            @error('jabatan_pengirim')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="instansi_pengirim" class="form-label">Instansi Pengirim <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control @error('instansi_pengirim') is-invalid @enderror" 
+                                                   id="instansi_pengirim" name="instansi_pengirim" 
+                                                   value="{{ old('instansi_pengirim') }}" required
+                                                   placeholder="Nama instansi/organisasi pengirim">
+                                            @error('instansi_pengirim')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                
+
+                                <!-- Section Informasi Surat -->
                                 <div class="row">
+                                    <div class="col-12">
+                                        <h5 class="text-primary border-bottom pb-2 mb-3">
+                                            <i class="fas fa-envelope"></i> Detil Isi Naskah
+                                        </h5>
+                                    </div>
+                                    
                                     <!-- Kolom Kiri -->
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -75,6 +130,8 @@
                                             @enderror
                                         </div>
 
+                                        
+
 
                                         <div class="mb-3">
                                             <label for="tanggal_surat" class="form-label">Tanggal Surat <span class="text-danger">*</span></label>
@@ -94,30 +151,51 @@
                                             @error('tanggal_diterima')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
-
                                         </div>
-                                            <div class="mb-3">
-                                                <label for="kategori_id" class="form-label">Kategori Surat <span class="text-danger">*</span></label>
-                                                <select name="kategori_id" id="kategori_id" class="form-select @error('kategori_id') is-invalid @enderror" required>
-                                                    <option value="">Pilih Kategori</option>
-                                                    @foreach ($kategori as $item)
-                                                        <option value="{{ $item->id }}" {{ old('kategori_id') == $item->id ? 'selected' : '' }}>
-                                                            {{ $item->nama_kategori }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                @error('kategori_id')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="kategori_id" class="form-label">Jenis Surat <span class="text-danger">*</span></label>
+                                            <select name="kategori_id" id="kategori_id" class="form-select @error('kategori_id') is-invalid @enderror" required>
+                                                <option value="">Pilih Jenis Surat</option>
+                                                @foreach ($kategori as $item)
+                                                    <option value="{{ $item->id }}" {{ old('kategori_id') == $item->id ? 'selected' : '' }}>
+                                                        {{ $item->nama_kategori }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('kategori_id')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
 
                                     <!-- Kolom Kanan -->
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="perihal" class="form-label">Perihal <span class="text-danger">*</span></label>
+                                            <label for="perihal" class="form-label">Hal <span class="text-danger">*</span></label>
                                             <textarea class="form-control @error('perihal') is-invalid @enderror" 
                                                       id="perihal" name="perihal" rows="3" required>{{ old('perihal') }}</textarea>
                                             @error('perihal')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                         <div class="mb-3">
+                                            <label for="asal_surat" class="form-label">Asal Surat <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control @error('asal_surat') is-invalid @enderror" 
+                                                   id="asal_surat" name="asal_surat" 
+                                                   value="{{ old('asal_surat') }}" required>
+                                            @error('asal_surat')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                         <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="isi_ringkas" class="form-label">Isi Ringkas <span class="text-danger">*</span></label>
+                                            <textarea class="form-control @error('isi_ringkas') is-invalid @enderror" 
+                                                      id="isi_ringkas" name="isi_ringkas" rows="3" required>{{ old('isi_ringkas') }}</textarea>
+                                            @error('isi_ringkas')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -133,22 +211,6 @@
                                                 <option value="rahasia" {{ old('sifat_surat') == 'rahasia' ? 'selected' : '' }}>Rahasia</option>
                                             </select>
                                             @error('sifat_surat')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="penerima_id" class="form-label">Penerima <span class="text-danger">*</span></label>
-                                            <select class="form-select @error('penerima_id') is-invalid @enderror" 
-                                                    id="penerima_id" name="penerima_id" required>
-                                                <option value="">Pilih Penerima</option>
-                                                @foreach($penerima as $user)
-                                                    <option value="{{ $user->id }}" {{ old('penerima_id') == $user->id ? 'selected' : '' }}>
-                                                        {{ $user->nama }} - {{ $user->jabatan ?? $user->email }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            @error('penerima_id')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -209,6 +271,19 @@ document.getElementById('file_surat').addEventListener('change', function(e) {
     
     // Tambahkan info file baru
     e.target.parentNode.appendChild(fileInfo);
+});
+
+// Script untuk auto-uppercase nama dan jabatan
+document.getElementById('nama_pengirim').addEventListener('input', function(e) {
+    e.target.value = e.target.value.toUpperCase();
+});
+
+document.getElementById('jabatan_pengirim').addEventListener('input', function(e) {
+    e.target.value = e.target.value.toUpperCase();
+});
+
+document.getElementById('instansi_pengirim').addEventListener('input', function(e) {
+    e.target.value = e.target.value.toUpperCase();
 });
 </script>
 @endsection

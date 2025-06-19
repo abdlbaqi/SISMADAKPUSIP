@@ -9,25 +9,34 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-   public function up()
+  public function up(): void
     {
         Schema::create('surat_masuk', function (Blueprint $table) {
             $table->id();
+
+            // Identitas Pengirim
+            $table->string('nama_pengirim');
+            $table->string('jabatan_pengirim');
+            $table->string('instansi_pengirim');
+
+            // Informasi Surat
             $table->string('nomor_agenda')->unique();
             $table->string('nomor_surat');
-            $table->string('perihal');
             $table->date('tanggal_surat');
             $table->date('tanggal_diterima');
+            $table->string('asal_surat');
+            $table->string('perihal');
+            $table->text('isi_ringkas');
             $table->foreignId('kategori_id')->constrained('kategori_surat');
             $table->enum('sifat_surat', ['biasa', 'penting', 'segera', 'rahasia']);
+            $table->text('keterangan')->nullable();
             $table->string('file_surat')->nullable();
-            $table->enum('status', ['belum_dibaca', 'sudah_dibaca', 'diproses', 'selesai']);
-            $table->foreignId('penerima_id')->nullable()->constrained('pengguna');
-            $table->foreignId('dibuat_oleh')->constrained('pengguna');
+
+            // Meta
+            $table->enum('status', ['belum_dibaca', 'sudah_dibaca', 'diproses', 'selesai'])->default('belum_dibaca');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */

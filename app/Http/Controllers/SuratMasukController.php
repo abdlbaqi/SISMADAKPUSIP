@@ -47,37 +47,43 @@ class SuratMasukController extends Controller
         return view('surat-masuk.create', compact('kategori', 'penerima', 'nomor_agenda_otomatis'));
     }
 
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'nomor_agenda' => 'required|string|unique:surat_masuk,nomor_agenda',
-            'nomor_surat' => 'required|string|max:255',
-            'perihal' => 'required|string|max:255',
-            'tanggal_surat' => 'required|date',
-            'tanggal_diterima' => 'required|date',
-            'kategori_id' => 'required|exists:kategori_surat,id',
-            'sifat_surat' => 'required|in:biasa,penting,segera,rahasia',
-            'penerima_id' => 'nullable|exists:pengguna,id',
-            'file_surat' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120', // 5MB
-        ]);
+  public function store(Request $request)
+{
+    $validatedData = $request->validate([
+        'nama_pengirim'      => 'required|string|max:255',
+        'jabatan_pengirim'   => 'required|string|max:255',
+        'instansi_pengirim'  => 'required|string|max:255',
+        'nomor_agenda'       => 'required|string|unique:surat_masuk,nomor_agenda',
+        'nomor_surat'        => 'required|string|max:255',
+        'asal_surat'         => 'required|string|max:255',
+        'perihal'            => 'required|string|max:255',
+        'isi_ringkas'        => 'required|string',
+        'tanggal_surat'      => 'required|date',
+        'tanggal_diterima'   => 'required|date',
+        'kategori_id'        => 'required|exists:kategori_surat,id',
+        'sifat_surat'        => 'required|in:biasa,penting,segera,rahasia',
+        'keterangan'         => 'nullable|string',
+        'file_surat'         => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120', // 5MB
+    ]);
 
-        // Handle file upload
-        if ($request->hasFile('file_surat')) {
-            $file = $request->file('file_surat');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $filepath = $file->storeAs('surat-masuk', $filename, 'public');
-            $validatedData['file_surat'] = $filepath;
-        }
-
-        // Set default values
-        $validatedData['status'] = 'belum_dibaca';
-        $validatedData['dibuat_oleh'] = Auth::id();
-
-        SuratMasuk::create($validatedData);
-
-        return redirect()->route('surat-masuk.index')
-                        ->with('sukses', 'Surat masuk berhasil ditambahkan');
+    // Handle file upload
+    if ($request->hasFile('file_surat')) {
+        $file = $request->file('file_surat');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $filepath = $file->storeAs('surat-masuk', $filename, 'public');
+        $validatedData['file_surat'] = $filepath;
     }
+
+    // Tambahkan field tambahan
+    $validatedData['status'] = 'belum_dibaca';
+    
+    // Simpan ke database
+    SuratMasuk::create($validatedData);
+
+    return redirect()->route('surat-masuk.index')
+                     ->with('sukses', 'Surat masuk berhasil ditambahkan');
+}
+
 
     public function show(SuratMasuk $suratMasuk)
     {

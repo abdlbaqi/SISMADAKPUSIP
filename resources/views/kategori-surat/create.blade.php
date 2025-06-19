@@ -52,20 +52,6 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3">
-                            <label for="keterangan" class="form-label">Deskripsi</label>
-                            <textarea class="form-control @error('keterangan') is-invalid @enderror" 
-                                      id="keterangan" 
-                                      name="keterangan" 
-                                      rows="4"
-                                      maxlength="1000"
-                                      placeholder="Deskripsi kategori surat (opsional)">{{ old('keterangan') }}</textarea>
-                            @error('keterangan')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            <div class="form-text">Maksimal 1000 karakter</div>
-                        </div>
-
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('kategori-surat.index') }}" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left me-1"></i>
