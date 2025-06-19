@@ -21,13 +21,10 @@ return new class extends Migration
             $table->date('tanggal_kirim');
             $table->foreignId('kategori_id')->constrained('kategori_surat');
             $table->enum('sifat_surat', ['biasa', 'penting', 'segera', 'rahasia']);
-            $table->string('lampiran')->nullable();
-            $table->text('isi_ringkas')->nullable();
             $table->string('file_surat')->nullable();
             $table->enum('status', ['draft', 'menunggu_persetujuan', 'disetujui', 'dikirim']);
             $table->foreignId('pembuat_id')->constrained('pengguna');
             $table->foreignId('penyetuju_id')->nullable()->constrained('pengguna');
-            $table->text('catatan')->nullable();
             $table->timestamps();
         });
     }

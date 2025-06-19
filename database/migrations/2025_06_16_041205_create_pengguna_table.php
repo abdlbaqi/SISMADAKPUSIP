@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('email')->unique();
             $table->string('kata_sandi');
-            $table->enum('peran', ['admin', 'petugas', 'pimpinan']);
+            $table->enum('peran', ['admin']);
             $table->string('jabatan')->nullable();
             $table->string('unit_kerja')->nullable();
             $table->timestamps();
