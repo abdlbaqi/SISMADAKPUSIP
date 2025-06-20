@@ -51,7 +51,6 @@
                                     <th>Jenis Surat</th>
                                     <th>Tanggal Diterima</th>
                                     <th>Sifat Surat</th>
-                                    <th>Keterangan</th>
                                     <th>Status</th>
                                     <th width="10%">Aksi</th>
                                 </tr>
@@ -88,7 +87,7 @@
                                                     @break
                                             @endswitch
                                         </td>
-                                        <td>{{ Str::limit($surat->keterangan, 50) }}</td>
+                                     
                                         <td class="text-center">
                                             @if($surat->status === 'belum_dibaca')
                                                 <span class="badge bg-warning text-dark">Belum Dibaca</span>

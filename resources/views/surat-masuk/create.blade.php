@@ -105,6 +105,37 @@
                                             <i class="fas fa-envelope"></i> Detil Isi Naskah
                                         </h5>
                                     </div>
+
+                                       <div class="mb-3">
+                                            <label for="kategori_id" class="form-label">Jenis Surat <span class="text-danger">*</span></label>
+                                            <select name="kategori_id" id="kategori_id" class="form-select @error('kategori_id') is-invalid @enderror" required>
+                                                <option value="">Pilih Jenis Surat</option>
+                                                @foreach ($kategori as $item)
+                                                    <option value="{{ $item->id }}" {{ old('kategori_id') == $item->id ? 'selected' : '' }}>
+                                                        {{ $item->nama_kategori }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('kategori_id')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+
+                                          <div class="mb-3">
+                                            <label for="sifat_surat" class="form-label">Sifat Surat <span class="text-danger">*</span></label>
+                                            <select class="form-select @error('sifat_surat') is-invalid @enderror" 
+                                                    id="sifat_surat" name="sifat_surat" required>
+                                                <option value="">Pilih Sifat Surat</option>
+                                                <option value="biasa" {{ old('sifat_surat') == 'biasa' ? 'selected' : '' }}>Biasa</option>
+                                                <option value="penting" {{ old('sifat_surat') == 'penting' ? 'selected' : '' }}>Penting</option>
+                                                <option value="segera" {{ old('sifat_surat') == 'segera' ? 'selected' : '' }}>Segera</option>
+                                                <option value="rahasia" {{ old('sifat_surat') == 'rahasia' ? 'selected' : '' }}>Rahasia</option>
+                                            </select>
+                                            @error('sifat_surat')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
                                     
                                     <!-- Kolom Kiri -->
                                     <div class="col-md-6">
@@ -119,7 +150,7 @@
                                             @enderror
                                             <small class="form-text text-muted">Nomor agenda otomatis dibuat sistem</small>
                                         </div>
-
+                                
                                         <div class="mb-3">
                                             <label for="nomor_surat" class="form-label">Nomor Surat <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control @error('nomor_surat') is-invalid @enderror" 
@@ -131,8 +162,6 @@
                                         </div>
 
                                         
-
-
                                         <div class="mb-3">
                                             <label for="tanggal_surat" class="form-label">Tanggal Surat <span class="text-danger">*</span></label>
                                             <input type="date" class="form-control @error('tanggal_surat') is-invalid @enderror" 
@@ -153,20 +182,6 @@
                                             @enderror
                                         </div>
                                         
-                                        <div class="mb-3">
-                                            <label for="kategori_id" class="form-label">Jenis Surat <span class="text-danger">*</span></label>
-                                            <select name="kategori_id" id="kategori_id" class="form-select @error('kategori_id') is-invalid @enderror" required>
-                                                <option value="">Pilih Jenis Surat</option>
-                                                @foreach ($kategori as $item)
-                                                    <option value="{{ $item->id }}" {{ old('kategori_id') == $item->id ? 'selected' : '' }}>
-                                                        {{ $item->nama_kategori }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            @error('kategori_id')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
                                     </div>
 
                                     <!-- Kolom Kanan -->
@@ -199,30 +214,7 @@
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
-
-                                        <div class="mb-3">
-                                            <label for="sifat_surat" class="form-label">Sifat Surat <span class="text-danger">*</span></label>
-                                            <select class="form-select @error('sifat_surat') is-invalid @enderror" 
-                                                    id="sifat_surat" name="sifat_surat" required>
-                                                <option value="">Pilih Sifat Surat</option>
-                                                <option value="biasa" {{ old('sifat_surat') == 'biasa' ? 'selected' : '' }}>Biasa</option>
-                                                <option value="penting" {{ old('sifat_surat') == 'penting' ? 'selected' : '' }}>Penting</option>
-                                                <option value="segera" {{ old('sifat_surat') == 'segera' ? 'selected' : '' }}>Segera</option>
-                                                <option value="rahasia" {{ old('sifat_surat') == 'rahasia' ? 'selected' : '' }}>Rahasia</option>
-                                            </select>
-                                            @error('sifat_surat')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="keterangan" class="form-label">Keterangan</label>
-                                            <textarea class="form-control @error('keterangan') is-invalid @enderror" 
-                                                      id="keterangan" name="keterangan" rows="3">{{ old('keterangan') }}</textarea>
-                                            @error('keterangan')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                        </div>
+                             
 
                                         <div class="mb-3">
                                             <label for="file_surat" class="form-label">File Surat</label>

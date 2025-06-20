@@ -62,7 +62,6 @@ class SuratMasukController extends Controller
         'tanggal_diterima'   => 'required|date',
         'kategori_id'        => 'required|exists:kategori_surat,id',
         'sifat_surat'        => 'required|in:biasa,penting,segera,rahasia',
-        'keterangan'         => 'nullable|string',
         'file_surat'         => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120', // 5MB
     ]);
 
