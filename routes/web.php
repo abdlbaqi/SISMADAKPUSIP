@@ -68,6 +68,10 @@ Route::get('/surat-masuk/arsip', [SuratMasukController::class, 'arsip'])->name('
 // Surat Keluar  
 Route::get('/surat-keluar/arsip', [SuratKeluarController::class, 'arsip'])->name('surat-keluar.arsip');
 
+Route::resource('disposisi', DisposisiController::class);
+Route::get('disposisi/arsip', [DisposisiController::class, 'arsip'])->name('disposisi.arsip');
+Route::get('laporan/disposisi', [LaporanController::class, 'disposisi'])->name('laporan.disposisi');
+
 // Laporan
 Route::get('/laporan/surat-masuk', [LaporanController::class, 'suratMasuk'])->name('laporan.surat-masuk');
 Route::get('/laporan/surat-keluar', [LaporanController::class, 'suratKeluar'])->name('laporan.surat-keluar');

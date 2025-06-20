@@ -2,8 +2,29 @@
 
 @section('judul', 'Beranda')
 
-@section('content')
-<div class="row">
+@push('styles')
+<style>
+    .dashboard-background {
+        background-image: url('{{ asset('images/logo_watermark.png') }}');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 50%;
+        background-attachment: fixed;
+        padding: 20px;
+    }
+
+    .card {
+        background-color: rgba(255, 255, 255, 0.95); /* semi transparan agar logo di belakang terlihat */
+        backdrop-filter: blur(2px); /* efek blur tipis */
+    }
+</style>
+@endpush
+
+
+<@section('content')
+<div class="dashboard-background">
+    <div class="row">
+
     {{-- Kartu Statistik --}}
     <div class="col-md-3 mb-4">
         <div class="card text-white bg-primary">
@@ -117,4 +138,5 @@
         </div>
     </div>
 </div>
+
 @endsection
