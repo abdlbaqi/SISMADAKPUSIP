@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Exports\SuratMasukExport;
 use App\Models\SuratMasuk;
 use App\Models\KategoriSurat;
-use App\Models\Pengguna;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -94,9 +93,7 @@ class SuratMasukController extends Controller
     public function edit(SuratMasuk $suratMasuk)
     {
         $kategori = KategoriSurat::all();
-        $penerima = Pengguna::all();
-        
-        return view('surat-masuk.edit', compact('suratMasuk', 'kategori', 'penerima'));
+        return view('surat-masuk.edit', compact('suratMasuk', 'kategori',));
     }
 
     public function update(Request $request, SuratMasuk $suratMasuk)
@@ -161,19 +158,15 @@ class SuratMasukController extends Controller
 
     
     public function unduhFile(SuratMasuk $suratMasuk)
-    {
-        // Cegah double "surat-masuk/"
-        $file = $suratMasuk->file_surat;
-        $file = str_replace('surat-masuk/', '', $file);
+{
+    $path = $suratMasuk->file_surat; // sudah "surat-keluar/NAMA.pdf"
 
-        $path = 'surat-masuk/' . $file;
-
-        if (!Storage::disk('public')->exists($path)) {
-            return back()->with('error', 'File tidak ditemukan di: ' . $path);
-        }
-
-        return Storage::disk('public')->download($path);
+    if (!Storage::disk('public')->exists($path)) {
+        return back()->with('error', 'File tidak ditemukan di: ' . $path);
     }
+
+    return Storage::disk('public')->download($path);
+}
 
     
         public function export(Request $request)
@@ -189,18 +182,18 @@ class SuratMasukController extends Controller
     {
         $search = $request->get('cari');
 
-        $data = \App\Models\SuratMasuk::query()
-            ->when($search, function ($query, $search) {
-                $query->where('nomor_surat', 'like', "%{$search}%")
-                    ->orWhere('nama_pengirim', 'like', "%{$search}%");
-            })
+        $data = SuratMasuk::query()
+            // ->when($search, function ($query, $search) {
+            //     $query->where('nomor_surat', 'like', "%{$search}%")
+            //         ->orWhere('nama_pengirim', 'like', "%{$search}%");
+            // })
             ->orderBy('tanggal_diterima', 'desc')
             ->get();
 
         $pdf = Pdf::loadView('surat-masuk.export-pdf', ['data' => $data])
                 ->setPaper('A4', 'landscape');
 
-        return $pdf->download('Surat_Masuk_' . now()->format('Ymd_His') . '.pdf');
+        return $pdf->download('Surat_Masuk_' . now()->format('Y-m-d') . '.pdf');
     }
 
 }

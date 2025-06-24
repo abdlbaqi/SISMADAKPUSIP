@@ -13,17 +13,14 @@ return new class extends Migration
     {
         Schema::create('surat_keluar', function (Blueprint $table) {
             $table->id();
-            $table->string('nomor_surat')->unique();
-            $table->string('nomor_referensi')->nullable();
+            $table->string('nomor_surat');
             $table->date('tanggal_surat');
-            $table->string('jenis_surat');
+            $table->foreignId('kategori_id')->constrained('kategori_surat');
             $table->string('sifat_surat');
             $table->string('klasifikasi');
             $table->text('hal');
-            $table->text('isi_ringkas');
             $table->string('file_surat')->nullable();
             $table->string('dikirimkan_melalui');
-            $table->string('status')->default('draft'); // draft, terkirim, arsip
             $table->timestamps();
         });
     }

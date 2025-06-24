@@ -15,22 +15,25 @@ class SuratKeluar extends Model
 
     protected $fillable = [
         'nomor_surat',
-        'nomor_referensi',
         'tanggal_surat',
-        'jenis_surat',
+        'kategori_id',
         'sifat_surat',
         'klasifikasi',
         'hal',
-        'isi_ringkas',
+        'tujuan_surat',
+        'nama_penandatangan',
         'file_surat',
         'dikirimkan_melalui',
-        'status'
     ];
 
     protected $dates = [
         'tanggal_surat'
     ];
 
+     public function kategori()
+    {
+        return $this->belongsTo(KategoriSurat::class, 'kategori_id');
+    }
     // Mutator untuk format tanggal
     public function setTanggalSuratAttribute($value)
     {
@@ -49,44 +52,4 @@ class SuratKeluar extends Model
         return Carbon::parse($this->tanggal_surat)->format('d F Y');
     }
 
-    // Scope untuk filter berdasarkan status
-    public function scopeByStatus($query, $status)
-    {
-        return $query->where('status', $status);
-    }
-
-    // Scope untuk filter berdasarkan jenis surat
-    public function scopeByJenis($query, $jenis)
-    {
-        return $query->where('jenis_surat', $jenis);
-    }
-
-    // Generate nomor surat otomatis
-    public static function generateNomorSurat($jenis = null, $klasifikasi = null)
-    {
-        $year = date('Y');
-        $month = date('m');
-        
-        // Ambil nomor terakhir untuk tahun ini
-        $lastNumber = self::whereYear('tanggal_surat', $year)
-                         ->orderBy('id', 'desc')
-                         ->first();
-        
-        $nextNumber = $lastNumber ? (intval(substr($lastNumber->nomor_surat, 0, 3)) + 1) : 1;
-        
-        // Format: 001/JENIS/KLASIFIKASI/MM/YYYY
-        $nomorSurat = sprintf('%03d', $nextNumber);
-        
-        if ($jenis) {
-            $nomorSurat .= '/' . strtoupper($jenis);
-        }
-        
-        if ($klasifikasi) {
-            $nomorSurat .= '/' . strtoupper($klasifikasi);
-        }
-        
-        $nomorSurat .= '/' . $month . '/' . $year;
-        
-        return $nomorSurat;
-    }
 }

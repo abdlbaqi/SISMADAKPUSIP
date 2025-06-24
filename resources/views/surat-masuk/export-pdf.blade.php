@@ -35,7 +35,7 @@
     </style>
 </head>
 <body>
-    <h3 style="text-align: center;">Laporan Surat Masuk</h3>
+    <h2 style="text-align: center;">Laporan Surat Masuk Dinas Perpustakaan Dan Kearsipan Provinsi Lampung</h2>
 
     <table>
         <thead>

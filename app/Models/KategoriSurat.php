@@ -30,11 +30,10 @@ class KategoriSurat extends Model
         return $this->hasMany(SuratMasuk::class, 'kategori_id');
     }
 
-    /**
-     * Scope untuk kategori aktif
-     */
-    public function scopeAktif($query)
+     public function suratKeluar()
     {
-        return $query->where('aktif', true);
+        return $this->hasMany(SuratKeluar::class, 'kategori_id');
     }
+
+
 }

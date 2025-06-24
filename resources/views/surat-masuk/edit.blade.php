@@ -135,19 +135,19 @@
                                                     Sekretaris
                                                 </option>
                                                 <option value="kabid_deposit" {{ old('unit_disposisi') == 'kabid_deposit' ? 'selected' : '' }}>
-                                                    Kabid Deposit, Akuisisi dan Pengelolaan Bahan Pustaka
+                                                    Bid Deposit, Akuisisi dan Pengelolaan Bahan Pustaka
                                                 </option>
                                                 <option value="kabid_pengembangan" {{ old('unit_disposisi') == 'kabid_pengembangan' ? 'selected' : '' }}>
-                                                    Kabid Pengembangan Sumberdaya Perpustakaan
+                                                    Bid Pengembangan Sumberdaya Perpustakaan
                                                 </option>
                                                 <option value="kabid_layanan" {{ old('unit_disposisi') == 'kabid_layanan' ? 'selected' : '' }}>
-                                                    Kabid Layanan, TI, Pelestarian dan Kerjasama
+                                                    Bid Layanan, TI, Pelestarian dan Kerjasama
                                                 </option>
                                                 <option value="kabid_pembinaan" {{ old('unit_disposisi') == 'kabid_pembinaan' ? 'selected' : '' }}>
-                                                    Kabid Pembinaan dan Pengawasan Kearsipan
+                                                    Bid Pembinaan dan Pengawasan Kearsipan
                                                 </option>
                                                 <option value="kabid_pengelolaan_arsip" {{ old('unit_disposisi') == 'kabid_pengelolaan_arsip' ? 'selected' : '' }}>
-                                                    Kabid Pengelolaan Arsip
+                                                    Bid Pengelolaan Arsip
                                                 </option>
                                             </select>
                                             @error('unit_disposisi')

@@ -1,5 +1,3 @@
-{{-- File: resources/views/surat-keluar/create.blade.php --}}
-
 @extends('layouts.app')
 
 @section('title', 'Tambah Surat Keluar')
@@ -21,184 +19,192 @@
                 <form action="{{ route('surat-keluar.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <div class="row">
-                            {{-- Kolom Kiri --}}
+                            <!-- Jenis Surat -->
                             <div class="col-md-6">
-                                {{-- Dikirimkan melalui --}}
-                                <div class="form-group">
-                                    <label for="dikirimkan_melalui">Dikirimkan melalui <span class="text-danger">*</span></label>
-                                    <select name="dikirimkan_melalui" id="dikirimkan_melalui" 
-                                            class="form-control @error('dikirimkan_melalui') is-invalid @enderror" required>
-                                        <option value="">Pilih Unit Kerja...</option>
-                                        @foreach($unitKerjaOptions as $key => $value)
-                                            <option value="{{ $key }}" {{ old('dikirimkan_melalui') == $key ? 'selected' : '' }}>
-                                                {{ $value }}
+                                <div class="mb-3">
+                                    <label for="kategori_id" class="form-label">Jenis Surat <span class="text-danger">*</span></label>
+                                    <select name="kategori_id" id="kategori_id" class="form-select @error('kategori_id') is-invalid @enderror" required>
+                                        <option value="">Pilih Jenis Surat</option>
+                                        @foreach ($kategori as $item)
+                                            <option value="{{ $item->id }}" {{ old('kategori_id') == $item->id ? 'selected' : '' }}>
+                                                {{ $item->nama_kategori }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('dikirimkan_melalui')
+                                    @error('kategori_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+                            </div>
 
-                                {{-- Jenis Naskah --}}
-                                <div class="form-group">
-                                    <label for="jenis_surat">Jenis Naskah <span class="text-danger">*</span></label>
-                                    <select name="jenis_surat" id="jenis_surat" 
-                                            class="form-control @error('jenis_surat') is-invalid @enderror" required>
-                                        <option value="">Pilih Jenis Naskah...</option>
-                                        @foreach($jenisOptions as $key => $value)
-                                            <option value="{{ $key }}" {{ old('jenis_surat') == $key ? 'selected' : '' }}>
-                                                {{ $value }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('jenis_surat')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                {{-- Sifat Naskah --}}
-                                <div class="form-group">
-                                    <label for="sifat_surat">Sifat Naskah <span class="text-danger">*</span></label>
-                                    <select name="sifat_surat" id="sifat_surat" 
-                                            class="form-control @error('sifat_surat') is-invalid @enderror" required>
-                                        <option value="">Pilih Sifat Naskah...</option>
-                                        @foreach($sifatOptions as $key => $value)
-                                            <option value="{{ $key }}" {{ old('sifat_surat') == $key ? 'selected' : '' }}>
-                                                {{ $value }}
-                                            </option>
-                                        @endforeach
+                            <!-- Sifat Surat -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="sifat_surat" class="form-label">Sifat Surat <span class="text-danger">*</span></label>
+                                    <select class="form-select @error('sifat_surat') is-invalid @enderror" 
+                                        id="sifat_surat" name="sifat_surat" required>
+                                        <option value="">Pilih Sifat Surat</option>
+                                        <option value="biasa" {{ old('sifat_surat') == 'biasa' ? 'selected' : '' }}>Biasa</option>
+                                        <option value="penting" {{ old('sifat_surat') == 'penting' ? 'selected' : '' }}>Penting</option>
+                                        <option value="segera" {{ old('sifat_surat') == 'segera' ? 'selected' : '' }}>Segera</option>
+                                        <option value="rahasia" {{ old('sifat_surat') == 'rahasia' ? 'selected' : '' }}>Rahasia</option>
                                     </select>
                                     @error('sifat_surat')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-
-                                {{-- Klasifikasi --}}
-                                <div class="form-group">
-                                    <label for="klasifikasi">Klasifikasi <span class="text-danger">*</span></label>
-                                    <select name="klasifikasi" id="klasifikasi" 
-                                            class="form-control @error('klasifikasi') is-invalid @enderror" required>
-                                        <option value="">Pilih Klasifikasi...</option>
-                                        @foreach($klasifikasiOptions as $key => $value)
-                                            <option value="{{ $key }}" {{ old('klasifikasi') == $key ? 'selected' : '' }}>
-                                                {{ $value }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('klasifikasi')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                {{-- Nomor Naskah --}}
-                                <div class="form-group">
-                                    <label for="nomor_surat">Nomor Naskah</label>
-                                    <div class="input-group">
-                                        <input type="text" name="nomor_surat" id="nomor_surat" 
-                                               class="form-control @error('nomor_surat') is-invalid @enderror"
-                                               value="{{ old('nomor_surat') }}"
-                                               placeholder="Kosongkan untuk generate otomatis">
-                                        <div class="input-group-append">
-                                            <button type="button" class="btn btn-info" id="generateNomor">
-                                                <i class="fas fa-magic"></i> Generate
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <small class="form-text text-muted">
-                                        INFO: Nomor diatas bersilat sementara, guna untuk penyesuaian file digital.
-                                    </small>
-                                    @error('nomor_surat')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                {{-- Nomor Referensi --}}
-                                <div class="form-group">
-                                    <label for="nomor_referensi">Nomor Referensi</label>
-                                    <input type="text" name="nomor_referensi" id="nomor_referensi" 
-                                           class="form-control @error('nomor_referensi') is-invalid @enderror"
-                                           value="{{ old('nomor_referensi') }}"
-                                           placeholder="Pilih Nomor Naskah...">
-                                    @error('nomor_referensi')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
                             </div>
+                        </div>
 
-                            {{-- Kolom Kanan --}}
+                        <div class="row">
+                            <!-- Tanggal Surat -->
                             <div class="col-md-6">
-                                {{-- Hal --}}
-                                <div class="form-group">
-                                    <label for="hal">Hal <span class="text-danger">*</span></label>
-                                    <input type="text" name="hal" id="hal" 
-                                           class="form-control @error('hal') is-invalid @enderror"
-                                           value="{{ old('hal') }}"
-                                           placeholder="Masukkan Hal..." required>
-                                    @error('hal')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                {{-- Isi Ringkas --}}
-                                <div class="form-group">
-                                    <label for="isi_ringkas">Isi Ringkas <span class="text-danger">*</span></label>
-                                    <textarea name="isi_ringkas" id="isi_ringkas" rows="8" 
-                                              class="form-control @error('isi_ringkas') is-invalid @enderror"
-                                              placeholder="Masukkan Isi Ringkas..." required>{{ old('isi_ringkas') }}</textarea>
-                                    @error('isi_ringkas')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                {{-- Tanggal Surat --}}
                                 <div class="form-group">
                                     <label for="tanggal_surat">Tanggal Surat <span class="text-danger">*</span></label>
-                                    <input type="date" name="tanggal_surat" id="tanggal_surat" 
-                                           class="form-control @error('tanggal_surat') is-invalid @enderror"
-                                           value="{{ old('tanggal_surat', date('Y-m-d')) }}" required>
+                                    <input type="date" 
+                                           class="form-control @error('tanggal_surat') is-invalid @enderror" 
+                                           id="tanggal_surat" 
+                                           name="tanggal_surat" 
+                                           value="{{ old('tanggal_surat') }}" 
+                                           required>
                                     @error('tanggal_surat')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+                            </div>
 
-                                {{-- File Naskah --}}
+                            <!-- Nomor Surat -->
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="file_surat">File naskah <span class="text-danger">*</span></label>
-                                    <div class="custom-file">
-                                        <input type="file" name="file_surat" id="file_surat" 
-                                               class="custom-file-input @error('file_surat') is-invalid @enderror"
-                                               accept=".pdf,.doc,.docx">
-                                        <label class="custom-file-label" for="file_surat">Pilih file...</label>
-                                    </div>
-                                    <small class="form-text text-muted">
-                                        Format: PDF, DOC, DOCX. Maksimal 5MB.
-                                    </small>
-                                    @error('file_surat')
+                                    <label for="nomor_surat" class="form-label">Nomor Naskah <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control @error('nomor_surat') is-invalid @enderror" 
+                                        id="nomor_surat" name="nomor_surat" 
+                                        value="{{ old('nomor_surat') }}" required>
+                                    @error('nomor_surat')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <!-- Klasifikasi -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="klasifikasi">Klasifikasi <span class="text-danger">*</span></label>
+                                    <input type="text" 
+                                           class="form-control @error('klasifikasi') is-invalid @enderror" 
+                                           id="klasifikasi" 
+                                           name="klasifikasi" 
+                                           value="{{ old('klasifikasi') }}" 
+                                           placeholder="Contoh: 000.01"
+                                           required>
+                                    @error('klasifikasi')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Dikirimkan Melalui -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dikirimkan_melalui">Dikirimkan Melalui <span class="text-danger">*</span></label>
+                                    <input type="text" 
+                                           class="form-control @error('dikirimkan_melalui') is-invalid @enderror" 
+                                           id="dikirimkan_melalui" 
+                                           name="dikirimkan_melalui" 
+                                           value="{{ old('dikirimkan_melalui') }}"
+                                           required>
+                                    @error('dikirimkan_melalui')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Hal -->
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="hal" class="form-label">Hal <span class="text-danger">*</span></label>
+                                    <textarea class="form-control @error('hal') is-invalid @enderror" 
+                                        id="hal" name="hal" rows="3" required>{{ old('hal') }}</textarea>
+                                    @error('hal')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Tujuan Surat -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tujuan_surat">Tujuan Surat <span class="text-danger">*</span></label>
+                                    <textarea class="form-control @error('tujuan_surat') is-invalid @enderror" 
+                                              id="tujuan_surat" 
+                                              name="tujuan_surat" 
+                                              rows="3" 
+                                              placeholder="Masukkan tujuan surat"
+                                              required>{{ old('tujuan_surat') }}</textarea>
+                                    @error('tujuan_surat')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nama Penandatangan -->
+                        <div class="form-group">
+                            <label for="nama_penandatangan">Nama Penandatangan <span class="text-danger">*</span></label>
+                            <input type="text" 
+                                   class="form-control @error('nama_penandatangan') is-invalid @enderror" 
+                                   id="nama_penandatangan" 
+                                   name="nama_penandatangan" 
+                                   value="{{ old('nama_penandatangan') }}" 
+                                   placeholder="Masukkan nama penandatangan"
+                                   required>
+                            @error('nama_penandatangan')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- File Upload -->
+                        <div class="form-group">
+                            <label for="file_surat">File Surat</label>
+                            <div class="custom-file">
+                                <input type="file" 
+                                       class="custom-file-input @error('file_surat') is-invalid @enderror" 
+                                       id="file_surat" 
+                                       name="file_surat"
+                                       accept=".pdf,.doc,.docx">
+                                <label class="custom-file-label" for="file_surat">Pilih file...</label>
+                            </div>
+                            <small class="form-text text-muted">
+                                Format yang diizinkan: PDF, DOC, DOCX. Maksimal ukuran: 5MB
+                            </small>
+                            @error('file_surat')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
 
                     <div class="card-footer">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-save"></i> Simpan
-                                </button>
-                                <button type="reset" class="btn btn-secondary">
-                                    <i class="fas fa-undo"></i> Reset
-                                </button>
-                            </div>
-                            <div class="col-md-6 text-right">
-                                <a href="{{ route('surat-keluar.index') }}" class="btn btn-light">
-                                    <i class="fas fa-times"></i> Batal
-                                </a>
-                            </div>
-                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Simpan
+                        </button>
+                        <a href="{{ route('surat-keluar.index') }}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Batal
+                        </a>
                     </div>
                 </form>
             </div>
@@ -209,46 +215,10 @@
 
 @push('scripts')
 <script>
-    $(document).ready(function() {
-        // Custom file input
-        $('.custom-file-input').on('change', function() {
-            let fileName = $(this)[0].files[0].name;
-            $(this).siblings('.custom-file-label').addClass('selected').html(fileName);
-        });
-
-        // Generate nomor surat otomatis
-        $('#generateNomor').click(function() {
-            const jenis = $('#jenis_surat').val();
-            const klasifikasi = $('#klasifikasi').val();
-            
-            if (!jenis || !klasifikasi) {
-                alert('Pilih jenis surat dan klasifikasi terlebih dahulu!');
-                return;
-            }
-
-            // Simulate auto-generate (you can make AJAX call to backend)
-            const date = new Date();
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const randomNum = Math.floor(Math.random() * 999) + 1;
-            
-            const nomorSurat = String(randomNum).padStart(3, '0') + '/' + 
-                              jenis.toUpperCase() + '/' + 
-                              klasifikasi.toUpperCase() + '/' + 
-                              month + '/' + year;
-            
-            $('#nomor_surat').val(nomorSurat);
-        });
-
-        // Auto-generate when jenis or klasifikasi changes (optional)
-        $('#jenis_surat, #klasifikasi').change(function() {
-            if ($('#nomor_surat').val() === '') {
-                // Auto generate if nomor surat is empty
-                setTimeout(function() {
-                    $('#generateNomor').click();
-                }, 100);
-            }
-        });
+    // Custom file input label
+    $('.custom-file-input').on('change', function() {
+        let fileName = $(this).val().split('\\').pop();
+        $(this).next('.custom-file-label').addClass("selected").html(fileName);
     });
 </script>
 @endpush

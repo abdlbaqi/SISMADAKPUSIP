@@ -42,14 +42,6 @@ class SuratMasuk extends Model
     }
 
     /**
-     * Relationship dengan Pengguna sebagai penerima
-     */
-    public function penerima()
-    {
-        return $this->belongsTo(Pengguna::class, 'penerima_id');
-    }
-
-    /**
      * Relationship dengan Pengguna sebagai pembuat surat
      */
     public function pembuatSurat()
@@ -75,34 +67,6 @@ class SuratMasuk extends Model
 
 
     /**
-     * Accessor untuk sifat surat badge class
-     */
-    // public function getSifatSuratBadgeClassAttribute()
-    // {
-    //     return match($this->sifat_surat) {
-    //         'biasa' => 'bg-secondary',
-    //         'penting' => 'bg-warning',
-    //         'segera' => 'bg-danger',
-    //         'rahasia' => 'bg-dark',
-    //         default => 'bg-secondary'
-    //     };
-    // }
-
-    /**
-     * Accessor untuk status text Indonesia
-     */
-    public function getStatusTextAttribute()
-    {
-        return match($this->status) {
-            'belum_dibaca' => 'Belum Dibaca',
-            'sudah_dibaca' => 'Sudah Dibaca',
-            'diproses' => 'Diproses',
-            'selesai' => 'Selesai',
-            default => '-'
-        };
-    }
-
-    /**
      * Accessor untuk sifat surat text Indonesia
      */
     public function getSifatSuratTextAttribute()
@@ -116,15 +80,4 @@ class SuratMasuk extends Model
         };
     }
 
-    /**
-     * Scope untuk pencarian
-     */
-    public function scopeSearch($query, $search)
-    {
-        return $query->where(function($q) use ($search) {
-            $q->where('nomor_surat', 'like', "%{$search}%")
-              ->orWhere('perihal', 'like', "%{$search}%")
-              ->orWhere('nomor_agenda', 'like', "%{$search}%");
-        });
-    }
 }

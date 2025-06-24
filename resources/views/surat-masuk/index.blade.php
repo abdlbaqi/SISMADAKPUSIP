@@ -46,7 +46,7 @@
                         <i class="fas fa-file-pdf"></i> Export PDF
                     </a>
                 </div>
-                
+
                 </div>
 
 
@@ -110,19 +110,19 @@
                                                             <span class="badge bg-primary">Sekretaris</span>
                                                             @break
                                                         @case('kabid_deposit')
-                                                            <span class="badge bg-info">Kabid Deposit</span>
+                                                            <span class="badge bg-info">Bid Deposit, Akusisi dan Pengelolaan Bahan Pustaka</span>
                                                             @break
                                                         @case('kabid_pengembangan')
-                                                            <span class="badge bg-success">Kabid Pengembangan</span>
+                                                            <span class="badge bg-success"> Bid Pengembangan Sumberdaya Perpustakaan</span>
                                                             @break
                                                         @case('kabid_layanan')
-                                                            <span class="badge bg-warning">Kabid Layanan</span>
+                                                            <span class="badge bg-warning"> Bid Layanan, TI, Pelestarian dan Kerjasama</span>
                                                             @break
                                                         @case('kabid_pembinaan')
-                                                            <span class="badge bg-danger">Kabid Pembinaan</span>
+                                                            <span class="badge bg-danger">  Bid Pembinaan dan Pengawasan Kearsipan</span>
                                                             @break
                                                         @case('kabid_pengelolaan_arsip')
-                                                            <span class="badge bg-dark">Kabid Pengelolaan Arsip</span>
+                                                            <span class="badge bg-dark">Bid Pengelolaan Arsip</span>
                                                             @break
                                                     @endswitch
                                                 </td>

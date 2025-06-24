@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('surat-keluar', SuratKeluarController::class);
     Route::post('/surat-keluar/{suratKeluar}/setuju', [SuratKeluarController::class, 'setuju'])->name('surat-keluar.setuju');
     Route::post('/surat-keluar/{suratKeluar}/kirim', [SuratKeluarController::class, 'kirim'])->name('surat-keluar.kirim');
-    Route::get('/surat-keluar/{suratKeluar}/unduh', [SuratKeluarController::class, 'unduhFile'])->name('surat-keluar.unduh');
+    Route::get('/surat-keluar/{suratKeluar}/unduh', [SuratKeluarController::class, 'unduhFile'])->name('surat-keluar.unduh-file');
     
     // Kategori Surat (hanya admin)
     Route::middleware(['peran:admin'])->group(function () {
