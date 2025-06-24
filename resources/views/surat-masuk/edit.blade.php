@@ -52,11 +52,7 @@
                                 <div class="row">
                                     <!-- Kiri -->
                                     <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="nomor_agenda">Nomor Agenda</label>
-                                            <input type="text" class="form-control" name="nomor_agenda" value="{{ $suratMasuk->nomor_agenda }}" readonly>
-                                        </div>
-
+                                       
                                         <div class="mb-3">
                                             <label for="nomor_surat">Nomor Surat <span class="text-danger">*</span></label>
                                             <input type="text" class="form-control @error('nomor_surat') is-invalid @enderror" name="nomor_surat" value="{{ old('nomor_surat', $suratMasuk->nomor_surat) }}" required>
@@ -97,12 +93,6 @@
                                     <!-- Kanan -->
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <label for="asal_surat">Asal Surat</label>
-                                            <input type="text" class="form-control @error('asal_surat') is-invalid @enderror" name="asal_surat" value="{{ old('asal_surat', $suratMasuk->asal_surat) }}">
-                                            @error('asal_surat') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                                        </div>
-
-                                        <div class="mb-3">
                                             <label for="isi_ringkas">Isi Ringkas</label>
                                             <textarea class="form-control @error('isi_ringkas') is-invalid @enderror" name="isi_ringkas" rows="3">{{ old('isi_ringkas', $suratMasuk->isi_ringkas) }}</textarea>
                                             @error('isi_ringkas') <div class="invalid-feedback">{{ $message }}</div> @enderror
@@ -136,11 +126,36 @@
                                             @error('sifat_surat') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         </div>
 
-                                        <div class="mb-3">
-                                            <label for="keterangan">Keterangan</label>
-                                            <textarea class="form-control @error('keterangan') is-invalid @enderror" name="keterangan" rows="2">{{ old('keterangan', $suratMasuk->keterangan) }}</textarea>
-                                            @error('keterangan') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                          <div class="mb-3">
+                                            <label for="unit_disposisi" class="form-label">Unit Kerja Tujuan Disposisi <span class="text-danger">*</span></label>
+                                            <select class="form-select @error('unit_disposisi') is-invalid @enderror" 
+                                                id="unit_disposisi" name="unit_disposisi">
+                                                <option value="">Pilih Unit Kerja</option>
+                                                <option value="sekretaris" {{ old('unit_disposisi') == 'sekretaris' ? 'selected' : '' }}>
+                                                    Sekretaris
+                                                </option>
+                                                <option value="kabid_deposit" {{ old('unit_disposisi') == 'kabid_deposit' ? 'selected' : '' }}>
+                                                    Kabid Deposit, Akuisisi dan Pengelolaan Bahan Pustaka
+                                                </option>
+                                                <option value="kabid_pengembangan" {{ old('unit_disposisi') == 'kabid_pengembangan' ? 'selected' : '' }}>
+                                                    Kabid Pengembangan Sumberdaya Perpustakaan
+                                                </option>
+                                                <option value="kabid_layanan" {{ old('unit_disposisi') == 'kabid_layanan' ? 'selected' : '' }}>
+                                                    Kabid Layanan, TI, Pelestarian dan Kerjasama
+                                                </option>
+                                                <option value="kabid_pembinaan" {{ old('unit_disposisi') == 'kabid_pembinaan' ? 'selected' : '' }}>
+                                                    Kabid Pembinaan dan Pengawasan Kearsipan
+                                                </option>
+                                                <option value="kabid_pengelolaan_arsip" {{ old('unit_disposisi') == 'kabid_pengelolaan_arsip' ? 'selected' : '' }}>
+                                                    Kabid Pengelolaan Arsip
+                                                </option>
+                                            </select>
+                                            @error('unit_disposisi')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
+                                    </div>
+
 
                                         <div class="mb-3">
                                             <label for="file_surat">Ganti File Surat</label>
@@ -164,3 +179,4 @@
     </section>
 </div>
 @endsection
+ 

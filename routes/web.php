@@ -29,24 +29,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
     // Surat Masuk
+    Route::get('/surat-masuk/export-pdf', [SuratMasukController::class, 'exportPdf'])->name('surat-masuk.export-pdf');
+     Route::get('/surat-masuk/export', [SuratMasukController::class, 'export'])->name('surat-masuk.export');
     Route::resource('surat-masuk', SuratMasukController::class);
     Route::get('/surat-masuk/{suratMasuk}/unduh', [SuratMasukController::class, 'unduhFile'])->name('surat-masuk.unduh-file');
+    // Tambahkan route ini di dalam group route surat-masuk
+
     
     // Surat Keluar
     Route::resource('surat-keluar', SuratKeluarController::class);
     Route::post('/surat-keluar/{suratKeluar}/setuju', [SuratKeluarController::class, 'setuju'])->name('surat-keluar.setuju');
     Route::post('/surat-keluar/{suratKeluar}/kirim', [SuratKeluarController::class, 'kirim'])->name('surat-keluar.kirim');
     Route::get('/surat-keluar/{suratKeluar}/unduh', [SuratKeluarController::class, 'unduhFile'])->name('surat-keluar.unduh');
-    
-    // Disposisi
-    Route::resource('disposisi', DisposisiController::class)->except(['edit', 'update', 'destroy']);
-    Route::post('/disposisi/{disposisi}/terima', [DisposisiController::class, 'terima'])->name('disposisi.terima');
-    Route::post('/disposisi/{disposisi}/proses', [DisposisiController::class, 'proses'])->name('disposisi.proses');
-    Route::post('/disposisi/{disposisi}/selesai', [DisposisiController::class, 'selesai'])->name('disposisi.selesai');
-    
-    // Arsip
-    Route::resource('arsip', ArsipController::class);
-    Route::get('/arsip/{arsip}/unduh', [ArsipController::class, 'unduhFile'])->name('arsip.unduh');
     
     // Kategori Surat (hanya admin)
     Route::middleware(['peran:admin'])->group(function () {
@@ -62,19 +56,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/laporan/arsip', [LaporanController::class, 'arsip'])->name('laporan.arsip');
 
 
-    // Surat Masuk
-Route::get('/surat-masuk/arsip', [SuratMasukController::class, 'arsip'])->name('surat-masuk.arsip');
 
 // Surat Keluar  
 Route::get('/surat-keluar/arsip', [SuratKeluarController::class, 'arsip'])->name('surat-keluar.arsip');
 
-Route::resource('disposisi', DisposisiController::class);
-Route::get('disposisi/arsip', [DisposisiController::class, 'arsip'])->name('disposisi.arsip');
-Route::get('laporan/disposisi', [LaporanController::class, 'disposisi'])->name('laporan.disposisi');
-
 // Laporan
 Route::get('/laporan/surat-masuk', [LaporanController::class, 'suratMasuk'])->name('laporan.surat-masuk');
 Route::get('/laporan/surat-keluar', [LaporanController::class, 'suratKeluar'])->name('laporan.surat-keluar');
+Route::get('surat-keluar/{suratKeluar}/download', [SuratKeluarController::class, 'downloadFile'])
+         ->name('surat-keluar.download');
+
 
 // Profil
 Route::get('/profil', [ProfilController::class, 'index'])->name('profil');

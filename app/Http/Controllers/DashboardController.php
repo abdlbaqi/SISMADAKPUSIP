@@ -16,7 +16,7 @@ class DashboardController extends Controller
     {
         $jumlahSuratMasuk = SuratMasuk::count();
         $jumlahSuratKeluar = SuratKeluar::count();
-        $jumlahDisposisi = Disposisi::count();
+
 
         $suratMasukTerbaru = SuratMasuk::orderBy('created_at', 'desc')->take(5)->get();
         $suratKeluarTerbaru = SuratKeluar::orderBy('created_at', 'desc')->take(5)->get();
@@ -24,7 +24,6 @@ class DashboardController extends Controller
         return view('dashboard', [
             'jumlahSuratMasuk' => $jumlahSuratMasuk,
             'jumlahSuratKeluar' => $jumlahSuratKeluar,
-            'jumlahDisposisi' => $jumlahDisposisi,
             'suratMasukTerbaru' => $suratMasukTerbaru,
             'suratKeluarTerbaru' => $suratKeluarTerbaru,
         ]);

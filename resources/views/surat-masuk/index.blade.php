@@ -6,7 +6,7 @@
         <div class="col-12">
             <div class="card shadow-sm rounded">
                 <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
-                    <h3 class="card-title mb-0">Data Surat Masuk</h3>
+                    <h3 class="card-title mb-0">Data Naskah Masuk</h3>
                 </div>
 
                 <div class="card-body">
@@ -23,7 +23,7 @@
                             <div class="col-md-4">
                                 <label for="cari">Pencarian</label>
                                 <input type="text" class="form-control" id="cari" name="cari" 
-                                       value="{{ request('cari') }}" placeholder="Nomor surat, asal, perihal...">
+                                       value="{{ request('cari') }}" placeholder="Masukkan Nomor surat">
                             </div>
                             <div class="col-auto">
                                 <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Cari</button>
@@ -34,24 +34,40 @@
                         </div>
                     </form>
 
+             <div class="d-flex justify-content-between mb-3">
+                <div>
+                    <a href="{{ route('surat-masuk.create') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Tambah Surat
+                    </a>
+                    <a href="{{ route('surat-masuk.export') }}" class="btn btn-success">
+                        <i class="fas fa-file-excel"></i> Export Excel
+                    </a>
+                    <a href="{{ route('surat-masuk.export-pdf') }}" target="_blank" class="btn btn-danger">
+                        <i class="fas fa-file-pdf"></i> Export PDF
+                    </a>
+                </div>
+                
+                </div>
+
+
                     <!-- Table -->
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover text-nowrap align-middle">
                             <thead class="table-light">
                                 <tr class="text-center">
                                     <th width="3%">No</th>
-                                    <th>No. Agenda</th>
-                                    <th>No. Surat</th>
+                           
+                                    <th>No. Naskah</th>
                                     <th>Nama Pengirim</th>
                                     <th>Jabatan</th>
-                                    <th>Instansi</th>
-                                    <th>Asal Surat</th>
+                                    <th>Instansi Pengirim</th>
                                     <th>Hal</th>
                                     <th>Isi Ringkas</th>
                                     <th>Jenis Surat</th>
-                                    <th>Tanggal Diterima</th>
                                     <th>Sifat Surat</th>
-                                    <th>Status</th>
+                                    <th>Tanggal Surat</th>
+                                    <th>Tanggal Surat Diterima</th>
+                                    <th>Unit Disposisi</th>
                                     <th width="10%">Aksi</th>
                                 </tr>
                             </thead>
@@ -59,42 +75,58 @@
                                 @forelse($surat_masuk as $index => $surat)
                                     <tr>
                                         <td class="text-center">{{ $surat_masuk->firstItem() + $index }}</td>
-                                        <td>{{ $surat->nomor_agenda }}</td>
                                         <td>{{ $surat->nomor_surat }}</td>
                                         <td>{{ $surat->nama_pengirim }}</td>
                                         <td>{{ $surat->jabatan_pengirim }}</td>
                                         <td>{{ $surat->instansi_pengirim }}</td>
-                                        <td>{{ $surat->asal_surat }}</td>
-                                        <td>{{ Str::limit($surat->perihal, 50) }}</td>
-                                        <td>{{ Str::limit($surat->isi_ringkas, 50) }}</td>
+                                        <td class="text-wrap" style="max-width: 200px;">{{ $surat->perihal }}</td>
+                                        <td class="text-wrap" style="max-width: 250px;">{{ $surat->isi_ringkas }}</td>
                                         <td>
-                                            <span class="badge bg-info text-dark">{{ $surat->kategori->nama_kategori ?? '-' }}</span>
+                                            <span class="badge bg-success text-light">{{ $surat->kategori->nama_kategori ?? '-' }}</span>
                                         </td>
-                                        <td class="text-center">{{ \Carbon\Carbon::parse($surat->tanggal_diterima)->format('d/m/Y') }}</td>
-                                        <td class="text-center">
+                                          <td class="text-center">
                                             @switch($surat->sifat_surat)
                                                 @case('biasa')
-                                                    <span class="badge bg-secondary">Biasa</span>
+                                                    <span class="badge bg-secondary text-light">Biasa</span>
                                                     @break
                                                 @case('penting')
-                                                    <span class="badge bg-warning text-dark">Penting</span>
+                                                    <span class="badge bg-info text-dark">Penting</span>
                                                     @break
                                                 @case('segera')
-                                                    <span class="badge bg-danger">Segera</span>
+                                                    <span class="badge bg-warning text-light">Segera</span>
                                                     @break
                                                 @case('rahasia')
-                                                    <span class="badge bg-dark">Rahasia</span>
+                                                    <span class="badge bg-danger">Rahasia</span>
                                                     @break
                                             @endswitch
                                         </td>
-                                     
-                                        <td class="text-center">
-                                            @if($surat->status === 'belum_dibaca')
-                                                <span class="badge bg-warning text-dark">Belum Dibaca</span>
-                                            @else
-                                                <span class="badge bg-success">Sudah Dibaca</span>
-                                            @endif
-                                        </td>
+
+                                        <td class="text-center">{{ \Carbon\Carbon::parse($surat->tanggal_surat)->format('d/m/Y') }}</td>
+                                        <td class="text-center">{{ \Carbon\Carbon::parse($surat->tanggal_diterima)->format('d/m/Y') }}</td>
+
+                                         <td>
+                                                    @switch($surat->unit_disposisi)
+                                                        @case('sekretaris')
+                                                            <span class="badge bg-primary">Sekretaris</span>
+                                                            @break
+                                                        @case('kabid_deposit')
+                                                            <span class="badge bg-info">Kabid Deposit</span>
+                                                            @break
+                                                        @case('kabid_pengembangan')
+                                                            <span class="badge bg-success">Kabid Pengembangan</span>
+                                                            @break
+                                                        @case('kabid_layanan')
+                                                            <span class="badge bg-warning">Kabid Layanan</span>
+                                                            @break
+                                                        @case('kabid_pembinaan')
+                                                            <span class="badge bg-danger">Kabid Pembinaan</span>
+                                                            @break
+                                                        @case('kabid_pengelolaan_arsip')
+                                                            <span class="badge bg-dark">Kabid Pengelolaan Arsip</span>
+                                                            @break
+                                                    @endswitch
+                                                </td>
+
                                         <td class="text-center">
                                             <div class="btn-group btn-group-sm">
                                                 <a href="{{ route('surat-masuk.show', $surat) }}" class="btn btn-info" title="Lihat">
@@ -120,7 +152,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="15" class="text-center">Tidak ada data surat masuk</td>
+                                        <td colspan="15" class="text-center">Tidak ada data naskah masuk</td>
                                     </tr>
                                 @endforelse
                             </tbody>

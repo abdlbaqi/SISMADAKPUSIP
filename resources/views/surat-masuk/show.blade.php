@@ -42,10 +42,10 @@
                         <dd class="col-sm-9">{{ $suratMasuk->nomor_surat }}</dd>
 
                         <dt class="col-sm-3">Tanggal Surat</dt>
-                        <dd class="col-sm-9">{{ $suratMasuk->tanggal_surat }}</dd>
+                        <dd class="col-sm-9">{{ $suratMasuk->tanggal_surat->format('d/m/Y') }}</dd>
 
                         <dt class="col-sm-3">Tanggal Diterima</dt>
-                        <dd class="col-sm-9">{{ $suratMasuk->tanggal_diterima }}</dd>
+                         <dd class="col-sm-9">{{$suratMasuk->tanggal_diterima->format('d/m/Y') }}</dd>
 
                         <dt class="col-sm-3">Jenis Surat</dt>
                         <dd class="col-sm-9">{{ $suratMasuk->kategori->nama_kategori ?? '-' }}</dd>
@@ -59,9 +59,6 @@
                         <dt class="col-sm-3">Isi Ringkas</dt>
                         <dd class="col-sm-9">{{ $suratMasuk->isi_ringkas ?? '-' }}</dd>
 
-                        <dt class="col-sm-3">Asal Surat</dt>
-                        <dd class="col-sm-9">{{ $suratMasuk->asal_surat }}</dd>
-
                         <dt class="col-sm-3">Nama Pengirim</dt>
                         <dd class="col-sm-9">{{ $suratMasuk->nama_pengirim }}</dd>
 
@@ -70,10 +67,9 @@
 
                         <dt class="col-sm-3">Instansi Pengirim</dt>
                         <dd class="col-sm-9">{{ $suratMasuk->instansi_pengirim }}</dd>
-
-                        <dt class="col-sm-3">Keterangan</dt>
-                        <dd class="col-sm-9">{{ $suratMasuk->keterangan ?? '-' }}</dd>
-
+                        
+                        <dt class="col-sm-3">Instansi Pengirim</dt>
+                        <dd class="col-sm-9">{{ $suratMasuk->instansi_pengirim }}</dd>
 
                         <dt class="col-sm-3">File Surat</dt>
                         <dd class="col-sm-9">

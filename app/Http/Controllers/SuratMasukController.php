@@ -2,26 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SuratMasukExport;
 use App\Models\SuratMasuk;
 use App\Models\KategoriSurat;
 use App\Models\Pengguna;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 
 class SuratMasukController extends Controller
 {
     public function index(Request $request)
     {
-        $query = SuratMasuk::with(['kategori', 'penerima', 'pembuatSurat']);
+        $query = SuratMasuk::with(['kategori','pembuatSurat']);
         
         // Filter berdasarkan pencarian
         if ($request->filled('cari')) {
             $cari = $request->cari;
             $query->where(function($q) use ($cari) {
-                $q->where('nomor_surat', 'like', "%{$cari}%")
-                  ->orWhere('nomor_agenda', 'like', "%{$cari}%");
+                $q->where('nomor_surat', 'like', "%{$cari}%");
             });
         }
         
@@ -34,17 +37,7 @@ class SuratMasukController extends Controller
     public function create()
     {
         $kategori = KategoriSurat::all();
-        $penerima = Pengguna::all();
-        
-        // Generate nomor agenda otomatis
-        $tahun = date('Y');
-        $bulan = date('m');
-        $terakhir = SuratMasuk::whereYear('created_at', $tahun)
-                             ->whereMonth('created_at', $bulan)
-                             ->count();
-        $nomor_agenda_otomatis = sprintf('%03d/SM/%s/%s', $terakhir + 1, $bulan, $tahun);
-        
-        return view('surat-masuk.create', compact('kategori', 'penerima', 'nomor_agenda_otomatis'));
+        return view('surat-masuk.create', compact('kategori',));
     }
 
   public function store(Request $request)
@@ -53,9 +46,7 @@ class SuratMasukController extends Controller
         'nama_pengirim'      => 'required|string|max:255',
         'jabatan_pengirim'   => 'required|string|max:255',
         'instansi_pengirim'  => 'required|string|max:255',
-        'nomor_agenda'       => 'required|string|unique:surat_masuk,nomor_agenda',
         'nomor_surat'        => 'required|string|max:255',
-        'asal_surat'         => 'required|string|max:255',
         'perihal'            => 'required|string|max:255',
         'isi_ringkas'        => 'required|string',
         'tanggal_surat'      => 'required|date',
@@ -63,6 +54,18 @@ class SuratMasukController extends Controller
         'kategori_id'        => 'required|exists:kategori_surat,id',
         'sifat_surat'        => 'required|in:biasa,penting,segera,rahasia',
         'file_surat'         => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120', // 5MB
+        'unit_disposisi' => [
+        'required',
+        Rule::in([
+            'sekretaris',
+            'kabid_deposit',
+            'kabid_pengembangan',
+            'kabid_layanan',
+            'kabid_pembinaan',
+            'kabid_pengelolaan_arsip',
+        ]),
+    ],
+
     ]);
 
     // Handle file upload
@@ -72,9 +75,6 @@ class SuratMasukController extends Controller
         $filepath = $file->storeAs('surat-masuk', $filename, 'public');
         $validatedData['file_surat'] = $filepath;
     }
-
-    // Tambahkan field tambahan
-    $validatedData['status'] = 'belum_dibaca';
     
     // Simpan ke database
     SuratMasuk::create($validatedData);
@@ -86,12 +86,7 @@ class SuratMasukController extends Controller
 
     public function show(SuratMasuk $suratMasuk)
     {
-        $suratMasuk->load(['kategori', 'penerima', 'pembuatSurat']);
-        
-        // Update status menjadi sudah dibaca jika masih belum dibaca
-        if ($suratMasuk->status === 'belum_dibaca') {
-            $suratMasuk->update(['status' => 'sudah_dibaca']);
-        }
+        $suratMasuk->load(['kategori','pembuatSurat']);
         
         return view('surat-masuk.show', compact('suratMasuk'));
     }
@@ -107,14 +102,28 @@ class SuratMasukController extends Controller
     public function update(Request $request, SuratMasuk $suratMasuk)
     {
         $validatedData = $request->validate([
-            'nomor_agenda' => 'required|string|unique:surat_masuk,nomor_agenda,' . $suratMasuk->id,
-            'nomor_surat' => 'required|string|max:255',
+            'nomor_surat' => 'required|string|max:255', 
+            'jabatan_pengirim'   => 'required|string|max:255',
+            'instansi_pengirim'  => 'required|string|max:255',
             'perihal' => 'required|string|max:255',
+            'isi_ringkas' => 'required|string|max:255',
             'tanggal_surat' => 'required|date',
             'tanggal_diterima' => 'required|date',
             'kategori_id' => 'required|exists:kategori_surat,id',
-            'sifat_surat' => 'required|in:biasa,penting,segera,rahasia',
-            'penerima_id' => 'nullable|exists:pengguna,id',
+            'sifat_surat' => 'required|in:biasa,penting,segera,rahasia,',
+            'nama_pengirim' => 'required|string|max:255',
+             'unit_disposisi' => [
+    'required',
+    Rule::in([
+        'sekretaris',
+        'kabid_deposit',
+        'kabid_pengembangan',
+        'kabid_layanan',
+        'kabid_pembinaan',
+        'kabid_pengelolaan_arsip',
+    ]),
+],
+
             'file_surat' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120', // 5MB
         ]);
 
@@ -126,9 +135,9 @@ class SuratMasukController extends Controller
             }
             
             $file = $request->file('file_surat');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $filepath = $file->storeAs('surat-masuk', $filename, 'public');
-            $validatedData['file_surat'] = $filepath;
+            $filename = $file->getClientOriginalName();
+            $file->storeAs('surat-masuk', $filename, 'public');
+            $validatedData['file_surat'] = $filename;
         }
 
         $suratMasuk->update($validatedData);
@@ -151,74 +160,47 @@ class SuratMasukController extends Controller
     }
 
     
-public function unduhFile(SuratMasuk $suratMasuk)
-{
-    // Cegah double "surat-masuk/"
-    $file = $suratMasuk->file_surat;
-    $file = str_replace('surat-masuk/', '', $file);
-
-    $path = 'surat-masuk/' . $file;
-
-    if (!Storage::disk('public')->exists($path)) {
-        return back()->with('error', 'File tidak ditemukan di: ' . $path);
-    }
-
-    return Storage::disk('public')->download($path);
-}
-
-
-    public function updateStatus(Request $request, SuratMasuk $suratMasuk)
+    public function unduhFile(SuratMasuk $suratMasuk)
     {
-        $request->validate([
-            'status' => 'required|in:belum_dibaca,sudah_dibaca,diproses,selesai'
-        ]);
+        // Cegah double "surat-masuk/"
+        $file = $suratMasuk->file_surat;
+        $file = str_replace('surat-masuk/', '', $file);
 
-        $suratMasuk->update([
-            'status' => $request->status
-        ]);
+        $path = 'surat-masuk/' . $file;
 
-        return redirect()->back()->with('sukses', 'Status surat berhasil diperbarui');
+        if (!Storage::disk('public')->exists($path)) {
+            return back()->with('error', 'File tidak ditemukan di: ' . $path);
+        }
+
+        return Storage::disk('public')->download($path);
     }
 
-    public function laporan(Request $request)
+    
+        public function export(Request $request)
     {
-        $query = SuratMasuk::with(['kategori', 'penerima', 'pembuatSurat']);
+        $search = $request->get('cari');
+        $filename = 'Data Surat Masuk Perpustakaan dan Kearsipan Provinsi Lampung ' . date('d-m-Y') . '.xlsx';
         
-        // Filter untuk laporan
-        if ($request->filled('bulan')) {
-            $query->whereMonth('tanggal_diterima', $request->bulan);
-        }
-        
-        if ($request->filled('tahun')) {
-            $query->whereYear('tanggal_diterima', $request->tahun);
-        }
-        
-        if ($request->filled('kategori_id')) {
-            $query->where('kategori_id', $request->kategori_id);
-        }
-        
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-        
-        $surat_masuk = $query->orderBy('tanggal_diterima', 'desc')->get();
-        $kategori = KategoriSurat::all();
-        
-        // Statistik
-        $total_surat = $surat_masuk->count();
-        $belum_dibaca = $surat_masuk->where('status', 'belum_dibaca')->count();
-        $sudah_dibaca = $surat_masuk->where('status', 'sudah_dibaca')->count();
-        $diproses = $surat_masuk->where('status', 'diproses')->count();
-        $selesai = $surat_masuk->where('status', 'selesai')->count();
-        
-        $statistik = [
-            'total_surat' => $total_surat,
-            'belum_dibaca' => $belum_dibaca,
-            'sudah_dibaca' => $sudah_dibaca,
-            'diproses' => $diproses,
-            'selesai' => $selesai
-        ];
-        
-        return view('surat-masuk.laporan', compact('surat_masuk', 'kategori', 'statistik'));
+        return Excel::download(new SuratMasukExport($search), $filename);
     }
+
+
+    public function exportPdf(Request $request)
+    {
+        $search = $request->get('cari');
+
+        $data = \App\Models\SuratMasuk::query()
+            ->when($search, function ($query, $search) {
+                $query->where('nomor_surat', 'like', "%{$search}%")
+                    ->orWhere('nama_pengirim', 'like', "%{$search}%");
+            })
+            ->orderBy('tanggal_diterima', 'desc')
+            ->get();
+
+        $pdf = Pdf::loadView('surat-masuk.export-pdf', ['data' => $data])
+                ->setPaper('A4', 'landscape');
+
+        return $pdf->download('Surat_Masuk_' . now()->format('Ymd_His') . '.pdf');
+    }
+
 }

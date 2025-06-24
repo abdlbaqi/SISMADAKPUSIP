@@ -20,20 +20,15 @@ return new class extends Migration
             $table->string('instansi_pengirim');
 
             // Informasi Surat
-            $table->string('nomor_agenda')->unique();
             $table->string('nomor_surat');
             $table->date('tanggal_surat');
             $table->date('tanggal_diterima');
-            $table->string('asal_surat');
             $table->string('perihal');
             $table->text('isi_ringkas');
             $table->foreignId('kategori_id')->constrained('kategori_surat');
             $table->enum('sifat_surat', ['biasa', 'penting', 'segera', 'rahasia']);
-            $table->text('keterangan')->nullable();
             $table->string('file_surat')->nullable();
 
-            // Meta
-            $table->enum('status', ['belum_dibaca', 'sudah_dibaca', 'diproses', 'selesai'])->default('belum_dibaca');
             $table->timestamps();
         });
     }

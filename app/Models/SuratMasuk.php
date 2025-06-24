@@ -15,9 +15,7 @@ class SuratMasuk extends Model
     'nama_pengirim',
     'jabatan_pengirim',
     'instansi_pengirim',
-    'nomor_agenda',
     'nomor_surat',
-    'asal_surat',
     'perihal',
     'isi_ringkas',
     'tanggal_surat',
@@ -26,8 +24,7 @@ class SuratMasuk extends Model
     'sifat_surat',
     'keterangan',
     'file_surat',
-    'status',
-    'dibuat_oleh',
+    'unit_disposisi',
 ];
 
 
@@ -76,33 +73,20 @@ class SuratMasuk extends Model
         return $this->tanggal_diterima ? $this->tanggal_diterima->format('d/m/Y') : '-';
     }
 
-    /**
-     * Accessor untuk status badge class
-     */
-    public function getStatusBadgeClassAttribute()
-    {
-        return match($this->status) {
-            'belum_dibaca' => 'bg-warning',
-            'sudah_dibaca' => 'bg-info',
-            'diproses' => 'bg-primary',
-            'selesai' => 'bg-success',
-            default => 'bg-secondary'
-        };
-    }
 
     /**
      * Accessor untuk sifat surat badge class
      */
-    public function getSifatSuratBadgeClassAttribute()
-    {
-        return match($this->sifat_surat) {
-            'biasa' => 'bg-secondary',
-            'penting' => 'bg-warning',
-            'segera' => 'bg-danger',
-            'rahasia' => 'bg-dark',
-            default => 'bg-secondary'
-        };
-    }
+    // public function getSifatSuratBadgeClassAttribute()
+    // {
+    //     return match($this->sifat_surat) {
+    //         'biasa' => 'bg-secondary',
+    //         'penting' => 'bg-warning',
+    //         'segera' => 'bg-danger',
+    //         'rahasia' => 'bg-dark',
+    //         default => 'bg-secondary'
+    //     };
+    // }
 
     /**
      * Accessor untuk status text Indonesia
@@ -133,45 +117,12 @@ class SuratMasuk extends Model
     }
 
     /**
-     * Scope untuk filter berdasarkan status
-     */
-    public function scopeByStatus($query, $status)
-    {
-        return $query->where('status', $status);
-    }
-
-    /**
-     * Scope untuk filter berdasarkan kategori
-     */
-    public function scopeByKategori($query, $kategoriId)
-    {
-        return $query->where('kategori_id', $kategoriId);
-    }
-
-    /**
-     * Scope untuk filter berdasarkan tahun
-     */
-    public function scopeByTahun($query, $tahun)
-    {
-        return $query->whereYear('tanggal_diterima', $tahun);
-    }
-
-    /**
-     * Scope untuk filter berdasarkan bulan
-     */
-    public function scopeByBulan($query, $bulan)
-    {
-        return $query->whereMonth('tanggal_diterima', $bulan);
-    }
-
-    /**
      * Scope untuk pencarian
      */
     public function scopeSearch($query, $search)
     {
         return $query->where(function($q) use ($search) {
             $q->where('nomor_surat', 'like', "%{$search}%")
-              ->orWhere('asal_surat', 'like', "%{$search}%")
               ->orWhere('perihal', 'like', "%{$search}%")
               ->orWhere('nomor_agenda', 'like', "%{$search}%");
         });

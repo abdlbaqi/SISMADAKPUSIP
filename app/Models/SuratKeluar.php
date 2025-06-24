@@ -1,9 +1,11 @@
 <?php
+// File: app/Models/SuratKeluar.php
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class SuratKeluar extends Model
 {
@@ -12,62 +14,79 @@ class SuratKeluar extends Model
     protected $table = 'surat_keluar';
 
     protected $fillable = [
-        'nomor_agenda',
         'nomor_surat',
-        'tujuan_surat',
-        'perihal',
+        'nomor_referensi',
         'tanggal_surat',
-        'tanggal_kirim',
-        'kategori_id',
+        'jenis_surat',
         'sifat_surat',
-        'lampiran',
+        'klasifikasi',
+        'hal',
         'isi_ringkas',
         'file_surat',
-        'status',
-        'pembuat_id',
-        'penyetuju_id',
-        'catatan'
+        'dikirimkan_melalui',
+        'status'
     ];
 
-    protected $casts = [
-        'tanggal_surat' => 'date',
-        'tanggal_kirim' => 'date',
+    protected $dates = [
+        'tanggal_surat'
     ];
 
-    public function kategori()
+    // Mutator untuk format tanggal
+    public function setTanggalSuratAttribute($value)
     {
-        return $this->belongsTo(KategoriSurat::class, 'kategori_id');
+        $this->attributes['tanggal_surat'] = Carbon::createFromFormat('Y-m-d', $value);
     }
 
-    public function pembuat()
+    // Accessor untuk format tanggal
+    public function getTanggalSuratAttribute($value)
     {
-        return $this->belongsTo(Pengguna::class, 'pembuat_id');
+        return Carbon::parse($value)->format('Y-m-d');
     }
 
-    public function penyetuju()
+    // Accessor untuk format tanggal Indonesia
+    public function getTanggalSuratFormattedAttribute()
     {
-        return $this->belongsTo(Pengguna::class, 'penyetuju_id');
+        return Carbon::parse($this->tanggal_surat)->format('d F Y');
     }
 
-    public function getSifatSuratTextAttribute()
+    // Scope untuk filter berdasarkan status
+    public function scopeByStatus($query, $status)
     {
-        $sifat = [
-            'biasa' => 'Biasa',
-            'penting' => 'Penting',
-            'segera' => 'Segera',
-            'rahasia' => 'Rahasia'
-        ];
-        return $sifat[$this->sifat_surat] ?? 'Tidak Diketahui';
+        return $query->where('status', $status);
     }
 
-    public function getStatusTextAttribute()
+    // Scope untuk filter berdasarkan jenis surat
+    public function scopeByJenis($query, $jenis)
     {
-        $status = [
-            'draft' => 'Draft',
-            'menunggu_persetujuan' => 'Menunggu Persetujuan',
-            'disetujui' => 'Disetujui',
-            'dikirim' => 'Dikirim'
-        ];
-        return $status[$this->status] ?? 'Tidak Diketahui';
+        return $query->where('jenis_surat', $jenis);
+    }
+
+    // Generate nomor surat otomatis
+    public static function generateNomorSurat($jenis = null, $klasifikasi = null)
+    {
+        $year = date('Y');
+        $month = date('m');
+        
+        // Ambil nomor terakhir untuk tahun ini
+        $lastNumber = self::whereYear('tanggal_surat', $year)
+                         ->orderBy('id', 'desc')
+                         ->first();
+        
+        $nextNumber = $lastNumber ? (intval(substr($lastNumber->nomor_surat, 0, 3)) + 1) : 1;
+        
+        // Format: 001/JENIS/KLASIFIKASI/MM/YYYY
+        $nomorSurat = sprintf('%03d', $nextNumber);
+        
+        if ($jenis) {
+            $nomorSurat .= '/' . strtoupper($jenis);
+        }
+        
+        if ($klasifikasi) {
+            $nomorSurat .= '/' . strtoupper($klasifikasi);
+        }
+        
+        $nomorSurat .= '/' . $month . '/' . $year;
+        
+        return $nomorSurat;
     }
 }

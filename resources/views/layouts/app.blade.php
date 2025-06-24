@@ -412,7 +412,7 @@
 </div>
 
     <h6 class="">
-        SISTEM INFORMASI SURAT MASUK DAN SURAT KELUAR PERPUSTAKAAN DAN KEARSIPAN
+        SISTEM INFORMASI SURAT MASUK DAN SURAT KELUAR PERPUSTAKAAN DAN KEARSIPAN PROVINSI LAMPUNG
     </h6>
 </div>
     
@@ -429,30 +429,25 @@
                 
                 <!-- Naskah Masuk -->
                 <div class="dropdown-sidebar">
-                   <button class="dropdown-toggle {{ request()->routeIs('surat-masuk.*') || request()->routeIs('disposisi.*') ? 'active' : '' }}" 
+                   <button class="dropdown-toggle {{ request()->routeIs('surat-masuk.*') ? 'active' : '' }}" 
                             type="button" data-target="menuSuratMasuk">
                         <span><i class="fas fa-inbox"></i> Naskah Masuk</span>
                     </button>
-                    <div class="dropdown-menu {{ request()->routeIs('surat-masuk.*') || request()->routeIs('disposisi.*') ? 'show' : '' }}" id="menuSuratMasuk">
+                    <div class="dropdown-menu {{ request()->routeIs('surat-masuk.*') ? 'show' : '' }}" id="menuSuratMasuk">
                         <ul class="submenu list-unstyled mb-0">
                             <li>
                                 <a class="dropdown-item {{ request()->routeIs('surat-masuk.create') ? 'active' : '' }}" 
                                 href="{{ route('surat-masuk.create') }}">
-                                    <i class="fas fa-plus"></i> Registrasi Surat Masuk
+                                    <i class="fas fa-plus"></i> Registrasi Naskah Masuk
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item {{ request()->routeIs('surat-masuk.index') ? 'active' : '' }}" 
                                 href="{{ route('surat-masuk.index') }}">
-                                    <i class="fas fa-list"></i> Daftar Surat Masuk
+                                    <i class="fas fa-list"></i> Daftar Naskah Masuk
                                 </a>
                             </li>
-                            <li>
-                                <a class="dropdown-item {{ request()->routeIs('disposisi.*') ? 'active' : '' }}" 
-                                href="{{ route('disposisi.index') }}">
-                                    <i class="fas fa-share-alt"></i> Disposisi
-                                </a>
-                            </li>
+                          
                         </ul>
                     </div>
                 </div>
@@ -468,21 +463,16 @@
                             <li>
                                 <a class="dropdown-item {{ request()->routeIs('surat-keluar.index') ? 'active' : '' }}" 
                                    href="{{ route('surat-keluar.index') }}">
-                                    <i class="fas fa-list"></i> Daftar Surat Keluar
+                                    <i class="fas fa-list"></i> Daftar Naskah Keluar
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item {{ request()->routeIs('surat-keluar.create') ? 'active' : '' }}" 
                                    href="{{ route('surat-keluar.create') }}">
-                                    <i class="fas fa-plus"></i> Tambah Surat Keluar
+                                    <i class="fas fa-plus"></i> Tambah Naskah Keluar
                                 </a>
                             </li>
-                            <li>
-                                <a class="dropdown-item {{ request()->routeIs('surat-keluar.arsip') ? 'active' : '' }}" 
-                                   href="{{ route('surat-keluar.arsip') }}">
-                                    <i class="fas fa-archive"></i> Arsip Surat Keluar
-                                </a>
-                            </li>
+                            
                         </ul>
                     </div>
                 </div>
