@@ -30,10 +30,10 @@
                     <a href="{{ route('surat-keluar.create') }}" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Tambah Surat
                     </a>
-                    <a href="{{ route('surat-masuk.export') }}" class="btn btn-success">
+                    <a href="{{ route('surat-keluar.export') }}" class="btn btn-success">
                         <i class="fas fa-file-excel"></i> Export Excel
                     </a>
-                    <a href="{{ route('surat-masuk.export-pdf') }}" target="_blank" class="btn btn-danger">
+                    <a href="{{ route('surat-keluar.export-pdf') }}" target="_blank" class="btn btn-danger">
                         <i class="fas fa-file-pdf"></i> Export PDF
                     </a>
                 </div>

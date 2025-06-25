@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\SuratKeluarExport;
 
 class SuratKeluarController extends Controller
 {
@@ -145,4 +148,31 @@ class SuratKeluarController extends Controller
 
     return Storage::disk('public')->download($path);
 }
+
+ public function exportPdf(Request $request)
+    {
+        $search = $request->get('cari');
+
+        $data = SuratKeluar::query()
+            // ->when($search, function ($query, $search) {
+            //     $query->where('nomor_surat', 'like', "%{$search}%")
+            //         ->orWhere('nama_pengirim', 'like', "%{$search}%");
+            // })
+            ->orderBy('tanggal_surat', 'desc')
+            ->get();
+
+        $pdf = Pdf::loadView('surat-keluar.export-pdf', ['data' => $data])
+                ->setPaper('A4', 'landscape');
+
+        return $pdf->download('Surat_Keluar_' . now()->format('Y-m-d') . '.pdf');
+    }
+
+       public function export(Request $request)
+    {
+        $search = $request->get('cari');
+        $filename = 'Data Surat Keluar Perpustakaan dan Kearsipan Provinsi Lampung ' . date('d-m-Y') . '.xlsx';
+        
+        return Excel::download(new SuratKeluarExport($search), $filename);
+    }
+
 }

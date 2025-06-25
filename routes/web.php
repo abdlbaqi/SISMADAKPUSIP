@@ -37,6 +37,8 @@ Route::middleware('auth')->group(function () {
 
     
     // Surat Keluar
+    Route::get('/surat-keluar/export-pdf', [SuratKeluarController::class, 'exportPdf'])->name('surat-keluar.export-pdf');
+    Route::get('/surat-keluar/export', [SuratKeluarController::class, 'export'])->name('surat-keluar.export');
     Route::resource('surat-keluar', SuratKeluarController::class);
     Route::post('/surat-keluar/{suratKeluar}/setuju', [SuratKeluarController::class, 'setuju'])->name('surat-keluar.setuju');
     Route::post('/surat-keluar/{suratKeluar}/kirim', [SuratKeluarController::class, 'kirim'])->name('surat-keluar.kirim');
