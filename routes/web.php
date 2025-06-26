@@ -40,8 +40,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/surat-keluar/export-pdf', [SuratKeluarController::class, 'exportPdf'])->name('surat-keluar.export-pdf');
     Route::get('/surat-keluar/export', [SuratKeluarController::class, 'export'])->name('surat-keluar.export');
     Route::resource('surat-keluar', SuratKeluarController::class);
-    Route::post('/surat-keluar/{suratKeluar}/setuju', [SuratKeluarController::class, 'setuju'])->name('surat-keluar.setuju');
-    Route::post('/surat-keluar/{suratKeluar}/kirim', [SuratKeluarController::class, 'kirim'])->name('surat-keluar.kirim');
     Route::get('/surat-keluar/{suratKeluar}/unduh', [SuratKeluarController::class, 'unduhFile'])->name('surat-keluar.unduh-file');
     
     // Kategori Surat (hanya admin)
@@ -58,9 +56,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/laporan/arsip', [LaporanController::class, 'arsip'])->name('laporan.arsip');
 
 
-
-// Surat Keluar  
-Route::get('/surat-keluar/arsip', [SuratKeluarController::class, 'arsip'])->name('surat-keluar.arsip');
 
 // Laporan
 Route::get('/laporan/surat-masuk', [LaporanController::class, 'suratMasuk'])->name('laporan.surat-masuk');

@@ -406,7 +406,7 @@
 <div class="sidebar-header text-center">
    <div class="logo-container d-flex align-items-center mb-3">
     <img src="{{ asset('images/lampung.png') }}" alt="Logo Dinas"
-     class="img-fluid me-custom" style="height: 60px; width: auto;">
+     class="img-fluid me-custom" style="height: 70px; width: auto;">
 
     <h4 class="mb-0 fw-bold text-primary">SISMADAKPUSIP</h4>
 </div>
@@ -458,6 +458,7 @@
                             type="button" data-target="menuSuratKeluar">
                         <span><i class="fas fa-paper-plane"></i> Naskah Keluar</span>
                     </button>
+
                     <div class="dropdown-menu {{ request()->routeIs('surat-keluar.*') ? 'show' : '' }}" id="menuSuratKeluar">
                         <ul class="submenu list-unstyled mb-0">
                             <li>
@@ -466,6 +467,7 @@
                                     <i class="fas fa-list"></i> Daftar Naskah Keluar
                                 </a>
                             </li>
+
                             <li>
                                 <a class="dropdown-item {{ request()->routeIs('surat-keluar.create') ? 'active' : '' }}" 
                                    href="{{ route('surat-keluar.create') }}">
@@ -480,13 +482,13 @@
 
             @if(auth()->user()->peran === 'admin')
             <div class="sidebar-section">
-                <h6>MASTER</h6>
+                <h6>Kelola Jenis SUrat</h6>
                 
                 <!-- Master Data -->
                 <div class="dropdown-sidebar">
                     <button class="dropdown-toggle {{ request()->routeIs('kategori-surat.*') || request()->routeIs('pengguna.*') ? 'active' : '' }}" 
                             type="button" data-target="menuMasterData">
-                        <span><i class="fas fa-cogs"></i> Master Data</span>
+                        <span><i class="fas fa-cogs"></i> Kelola Jenis Surat</span>
                     </button>
                     <div class="dropdown-menu {{ request()->routeIs('kategori-surat.*') || request()->routeIs('pengguna.*') ? 'show' : '' }}" id="menuMasterData">
                         <ul class="submenu list-unstyled mb-0">
@@ -508,35 +510,8 @@
             </div>
             @endif
 
-            <div class="sidebar-section">
-                <!-- Laporan -->
-                <div class="dropdown-sidebar">
-                    <button class="dropdown-toggle {{ request()->routeIs('laporan.*') ? 'active' : '' }}" 
-                            type="button" data-target="menuLaporan">
-                        <span><i class="fas fa-chart-bar"></i> Laporan</span>
-                    </button>
-                    <div class="dropdown-menu {{ request()->routeIs('laporan.*') ? 'show' : '' }}" id="menuLaporan">
-                        <ul class="submenu list-unstyled mb-0">
-                            <li>
-                                <a class="dropdown-item {{ request()->routeIs('laporan.index') ? 'active' : '' }}" 
-                                   href="{{ route('laporan.index') }}">
-                                    <i class="fas fa-chart-line"></i> Laporan Umum
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item {{ request()->routeIs('laporan.surat-masuk') ? 'active' : '' }}" 
-                                   href="{{ route('laporan.surat-masuk') }}">
-                                    <i class="fas fa-inbox"></i> Laporan Surat Masuk
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item {{ request()->routeIs('laporan.surat-keluar') ? 'active' : '' }}" 
-                                   href="{{ route('laporan.surat-keluar') }}">
-                                    <i class="fas fa-paper-plane"></i> Laporan Surat Keluar
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+           
+
                 </div>
             </div>
 
@@ -656,6 +631,18 @@
 
     <!-- Bootstrap JS Bundle (dengan Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    @stack('scripts')
+    ...
+    @stack('scripts')
+
+    <!-- Footer -->
+    <footer class="text-center py-4 mt-auto bg-white border-top" style="z-index: 5; position: relative;">
+        <small class="p-2 mb-2 bg-primary text-white">
+           HAK CIPTA &copy;2025 PERPUSTAKAAN DAN KEARSIPAN PROVINSI LAMPUNG. All rights reserved.
+        </small>
+    </footer>
+</body>
+</html>
 
 </body>
 </html>

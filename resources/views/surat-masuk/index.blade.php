@@ -79,8 +79,8 @@
                                         <td>{{ $surat->nama_pengirim }}</td>
                                         <td>{{ $surat->jabatan_pengirim }}</td>
                                         <td>{{ $surat->instansi_pengirim }}</td>
-                                        <td class="text-wrap" style="max-width: 200px;">{{ $surat->perihal }}</td>
-                                        <td class="text-wrap" style="max-width: 250px;">{{ $surat->isi_ringkas }}</td>
+                                        <td class="text-wrap text-jutsify" style="max-width: 200px;">{{ $surat->perihal }}</td>
+                                        <td class="text-wrap text-justify " style="max-width: 250px;">{{ $surat->isi_ringkas }}</td>
                                         <td>
                                             <span class="badge bg-success text-light">{{ $surat->kategori->nama_kategori ?? '-' }}</span>
                                         </td>

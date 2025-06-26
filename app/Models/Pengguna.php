@@ -16,7 +16,6 @@ class Pengguna extends Authenticatable
         'nama',
         'email',
         'kata_sandi',
-        'jabatan',
         'unit_kerja',
         'peran'
     ];
@@ -30,14 +29,6 @@ class Pengguna extends Authenticatable
         'email_verified_at' => 'datetime',
         'kata_sandi' => 'hashed'
     ];
-
-    /**
-     * Relationship dengan SuratMasuk sebagai penerima
-     */
-    public function suratMasukSebagaiPenerima()
-    {
-        return $this->hasMany(SuratMasuk::class, 'penerima_id');
-    }
 
     /**
      * Relationship dengan SuratMasuk sebagai pembuat
@@ -55,11 +46,4 @@ class Pengguna extends Authenticatable
         return $this->nama . ($this->jabatan ? ' - ' . $this->jabatan : '');
     }
 
-    /**
-     * Scope untuk filter berdasarkan role
-     */
-    public function scopeByRole($query, $role)
-    {
-        return $query->where('role', $role);
-    }
 }

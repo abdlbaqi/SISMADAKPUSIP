@@ -10,7 +10,6 @@
                 <th>Nama</th>
                 <th>Email</th>
                 <th>Peran</th>
-                <th>Jabatan</th>
                 <th>Unit Kerja</th>
             </tr>
         </thead>
@@ -20,7 +19,6 @@
                 <td>{{ $pengguna->nama }}</td>
                 <td>{{ $pengguna->email }}</td>
                 <td>{{ $pengguna->peran }}</td>
-                <td>{{ $pengguna->jabatan }}</td>
                 <td>{{ $pengguna->unit_kerja }}</td>
             </tr>
             @endforeach

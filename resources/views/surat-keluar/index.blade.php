@@ -30,10 +30,10 @@
                     <a href="{{ route('surat-keluar.create') }}" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Tambah Surat
                     </a>
-                    <a href="{{ route('surat-keluar.export') }}" class="btn btn-success">
+                    <a href="{{ route('surat-masuk.export') }}" class="btn btn-success">
                         <i class="fas fa-file-excel"></i> Export Excel
                     </a>
-                    <a href="{{ route('surat-keluar.export-pdf') }}" target="_blank" class="btn btn-danger">
+                    <a href="{{ route('surat-masuk.export-pdf') }}" target="_blank" class="btn btn-danger">
                         <i class="fas fa-file-pdf"></i> Export PDF
                     </a>
                 </div>
@@ -41,7 +41,7 @@
                 </div>
 
                   <div class="table-responsive">
-    <table class="table table-bordered table-striped" id="suratKeluarTable">
+    <table class="table table-bordered table-striped table-hover text-nowrap align-middle" id="suratKeluarTable">
         <thead>
             <tr>
                 <th width="5%">No</th>
@@ -87,12 +87,12 @@
                     </td>
                     <td>{{ $surat->klasifikasi }}</td>
                     <td>
-                        <div class="text-truncate" style="max-width: 150px;" title="{{ $surat->hal }}">
+                        <div class="text-wrap text-justify" style="max-width: 300px;" title="{{ $surat->hal }}">
                             {{ $surat->hal }}
                         </div>
                     </td>
                     <td>
-                        <div class="text-truncate" style="max-width: 150px;" title="{{ $surat->tujuan_surat }}">
+                        <div class="text-wrap text-justify" style="max-width: 300px;" title="{{ $surat->tujuan_surat }}">
                             {{ $surat->tujuan_surat }}
                         </div>
                     </td>
@@ -101,10 +101,10 @@
 
                     <td class="text-center">
                                             <div class="btn-group btn-group-sm">
-                                                <a href="{{ route('surat-masuk.show', $surat) }}" class="btn btn-info" title="Lihat">
+                                                <a href="{{ route('surat-keluar.show', $surat) }}" class="btn btn-info" title="Lihat">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
-                                                <a href="{{ route('surat-masuk.edit', $surat) }}" class="btn btn-warning" title="Edit">
+                                                <a href="{{ route('surat-keluar.edit', $surat) }}" class="btn btn-warning" title="Edit">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                                 @if($surat->file_surat)
@@ -112,7 +112,7 @@
                                                         <i class="fas fa-download"></i>
                                                     </a>
                                                 @endif
-                                                <form action="{{ route('surat-masuk.destroy', $surat) }}" method="POST" class="d-inline">
+                                                <form action="{{ route('surat-keluar.destroy', $surat) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus surat ini?')" title="Hapus">

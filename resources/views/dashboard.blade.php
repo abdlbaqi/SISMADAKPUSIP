@@ -13,9 +13,22 @@
         padding: 20px;
     }
 
-    .card {
-        background-color: rgba(255, 255, 255, 0.95); /* semi transparan */
-        backdrop-filter: blur(2px);
+    .card-stats {
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .card-stats:hover {
+        transform: translateY(-5px);
+    }
+
+    .icon-circle {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .card-title {
@@ -30,16 +43,16 @@
 
 @section('content')
 <div class="dashboard-background">
+    {{-- Statistik Kartu --}}
     <div class="row mb-4">
-        {{-- Kartu Statistik --}}
         <div class="col-md-3 mb-3">
-            <div class="card text-white bg-primary shadow">
-                <div class="card-body d-flex justify-content-between">
+            <div class="card card-stats text-white bg-primary shadow h-100">
+                <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
-                        <h5 class="card-title">Surat Masuk</h5>
-                        <h2 class="mb-0">{{ $jumlahSuratMasuk }}</h2>
+                        <h6 class="text-uppercase">Surat Masuk</h6>
+                        <h2 class="fw-bold">{{ $jumlahSuratMasuk }}</h2>
                     </div>
-                    <div class="align-self-center">
+                    <div class="icon-circle">
                         <i class="fas fa-inbox fa-2x"></i>
                     </div>
                 </div>
@@ -47,33 +60,33 @@
         </div>
 
         <div class="col-md-3 mb-3">
-            <div class="card text-white bg-success shadow">
-                <div class="card-body d-flex justify-content-between">
+            <div class="card card-stats center text-white bg-success shadow h-100">
+                <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
-                        <h5 class="card-title">Surat Keluar</h5>
-                        <h2 class="mb-0">{{ $jumlahSuratKeluar }}</h2>
+                        <h6 class="text-uppercase">Surat Keluar</h6>
+                        <h2 class="fw-bold">{{ $jumlahSuratKeluar }}</h2>
                     </div>
-                    <div class="align-self-center">
+                    <div class="icon-circle">
                         <i class="fas fa-paper-plane fa-2x"></i>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- Tambahkan lebih banyak kartu jika diperlukan --}}
+        {{-- Tambah kartu lain jika diperlukan --}}
     </div>
 
-    {{-- Daftar Surat Terbaru --}}
+    {{-- Tabel Surat Terbaru --}}
     <div class="row">
         <div class="col-md-6 mb-4">
-            <div class="card shadow">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Surat Masuk Terbaru</h5>
+            <div class="card shadow h-100">
+                <div class="card-header bg-light border-bottom">
+                    <h6 class="mb-0 text-primary fw-bold">📥 Surat Masuk Terbaru</h6>
                 </div>
                 <div class="card-body">
-                    @if($suratMasukTerbaru->count() > 0)
+                    @if($suratMasukTerbaru->count())
                         <div class="table-responsive">
-                            <table class="table table-sm table-bordered">
+                            <table class="table table-hover table-sm table-bordered">
                                 <thead class="table-light">
                                     <tr>
                                         <th>Nomor Surat</th>
@@ -99,19 +112,29 @@
             </div>
         </div>
 
+        <div class="card mb-4">
+    <div class="card-header bg-light border-bottom">
+        <h6 class="mb-0 fw-bold text-dark">📊 Grafik Surat Masuk & Keluar per Bulan</h6>
+    </div>
+  <div class="card-body">
+    <canvas id="suratChart" height="100"></canvas>
+</div>
+</div> {{-- <== penutup card grafik yang belum ditutup --}}
+
+
         <div class="col-md-6 mb-4">
-            <div class="card shadow">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Surat Keluar Terbaru</h5>
+            <div class="card shadow h-100">
+                <div class="card-header bg-light border-bottom">
+                    <h6 class="mb-0 text-success fw-bold">📤 Surat Keluar Terbaru</h6>
                 </div>
                 <div class="card-body">
-                    @if($suratKeluarTerbaru->count() > 0)
+                    @if($suratKeluarTerbaru->count())
                         <div class="table-responsive">
-                            <table class="table table-sm table-bordered">
+                            <table class="table table-hover table-sm table-bordered">
                                 <thead class="table-light">
                                     <tr>
                                         <th>Nomor Surat</th>
-                                        <th>Dikirimkan Melalui</th>
+                                        <th>Dikirim Melalui</th>
                                         <th>Tanggal</th>
                                     </tr>
                                 </thead>
@@ -134,4 +157,43 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('suratChart').getContext('2d');
+    const suratChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {!! json_encode($labels) !!},
+            datasets: [
+                {
+                    label: 'Surat Masuk',
+                    data: {!! json_encode($dataMasuk) !!},
+                    backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Surat Keluar',
+                    data: {!! json_encode($dataKeluar) !!},
+                    backgroundColor: 'rgba(75, 192, 192, 0.7)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 }
+                }
+            }
+        }
+    });
+</script>
+@endpush
+
 @endsection

@@ -44,11 +44,11 @@
                 <th style="width: 12%;">Nomor Surat</th>
                 <th style="width: 15%;">Nama Pengirim</th>
                 <th style="width: 20%;">Instansi</th>
-                <th style="width: 15%;">Perihal</th>
+                <th style="width: 10%;">Perihal</th>
                 <th style="width: 15%;">Isi Ringkas</th>
                 <th style="width: 10%;">Tanggal Surat</th>
                 <th style="width: 10%;">Tanggal Diterima</th>
-                <th style="width: 10%;">Jenis Surat</th>
+                <th style="width: 15%;">Jenis Surat</th>
                 <th style="width: 10%;">Sifat Surat</th>
                 <th style="width: 10%;">Nama Surat</th>
             </tr>
@@ -60,8 +60,8 @@
                 <td>{{ $row->nomor_surat }}</td>
                 <td>{{ $row->nama_pengirim }}</td>
                 <td>{{ $row->instansi_pengirim }}</td>
-                <td>{{ $row->perihal }}</td>
-                <td>{{ $row->isi_ringkas }}</td>
+                <td class="text-justify">{{ $row->perihal }}</td>
+                <td class="text-justify">{{ $row->isi_ringkas }}</td>
                 <td class="text-center">{{ \Carbon\Carbon::parse($row->tanggal_surat)->format('d/m/Y') }}</td>
                 <td class="text-center">{{ \Carbon\Carbon::parse($row->tanggal_diterima)->format('d/m/Y') }}</td>
                 <td class="text-center">{{ ucfirst($row->kategori->nama_kategori) }}</td>

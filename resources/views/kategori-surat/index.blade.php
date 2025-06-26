@@ -81,9 +81,10 @@
                     </div>
 
                     {{-- Pagination --}}
-                    <div class="d-flex justify-content-center">
-                        {{ $kategoriSurat->links() }}
-                    </div>
+                   <div class="d-flex justify-content-center mt-4">
+    {{ $kategoriSurat->links('pagination::bootstrap-5') }}
+</div>
+
                 </div>
             </div>
         </div>
