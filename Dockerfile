@@ -20,8 +20,7 @@ RUN composer install --no-dev --optimize-autoloader
 # Permissions
 RUN chmod -R 755 storage bootstrap/cache
 
-# Cache
-RUN php artisan config:cache && php artisan route:cache && php artisan view:cache
+
 
 EXPOSE 8080
 
