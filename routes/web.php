@@ -14,7 +14,7 @@ use App\Http\Controllers\LaporanController;
 
 // Halaman utama redirect ke dashboard
 Route::get('/', function () {
-    return redirect('/dashboard');
+    return redirect('/welcome');
 });
 
 // Rute autentikasi
