@@ -24,6 +24,9 @@ class SuratMasukController extends Controller
             $cari = $request->cari;
             $query->where(function($q) use ($cari) {
                 $q->where('nomor_surat', 'like', "%{$cari}%");
+                $q->orwhere('perihal', 'like', "%{$cari}%");
+                $q->orwhere('instansi_pengirim', 'like', "%{$cari}");
+                $q->orwhere('sifat_surat', 'like', "%{$cari}");
             });
         }
         

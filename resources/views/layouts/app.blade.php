@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('judul') SISMADAKPUSIP</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -175,7 +175,7 @@
             backdrop-filter: blur(2px);
         }
         
-        /* Dropdown Styles */
+        /* Dropdown Styles untuk Sidebar */
         .dropdown-sidebar {
             width: 100%;
         }
@@ -524,11 +524,12 @@
                 <!-- Header -->
                 <div class="main-header d-flex justify-content-between align-items-center p-3 border-bottom">
                     <h4 class="mb-0">@yield('judul')</h4>
+                    <!-- Dropdown Akun - Menggunakan Bootstrap dropdown -->
                     <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-user me-2"></i>{{ auth()->user()->nama }}
                         </button>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                             <li>
                                 <a class="dropdown-item" href="{{ route('profil') ?? '#' }}">
                                     <i class="fas fa-user-cog me-2"></i>Profil
@@ -569,14 +570,15 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS Bundle (dengan Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Ambil semua dropdown toggle button
-        const dropdownToggles = document.querySelectorAll('.dropdown-sidebar .dropdown-toggle');
+        // Hanya handle dropdown untuk sidebar, bukan untuk dropdown akun
+        const sidebarDropdownToggles = document.querySelectorAll('.dropdown-sidebar .dropdown-toggle');
 
-        dropdownToggles.forEach(function (toggle) {
+        sidebarDropdownToggles.forEach(function (toggle) {
             toggle.addEventListener('click', function (e) {
                 e.preventDefault();
                 
@@ -603,7 +605,7 @@
         });
 
         // Auto buka dropdown jika ada item aktif di dalamnya
-        const activeItems = document.querySelectorAll('.dropdown-item.active');
+        const activeItems = document.querySelectorAll('.dropdown-sidebar .dropdown-item.active');
         activeItems.forEach(function (item) {
             const parentDropdown = item.closest('.dropdown-sidebar');
             if (parentDropdown) {
@@ -617,7 +619,7 @@
         });
         
         // Auto buka dropdown untuk toggle yang sudah active
-        const activeToggles = document.querySelectorAll('.dropdown-toggle.active');
+        const activeToggles = document.querySelectorAll('.dropdown-sidebar .dropdown-toggle.active');
         activeToggles.forEach(function (toggle) {
             const targetId = toggle.getAttribute('data-target');
             const targetMenu = document.getElementById(targetId);
@@ -629,10 +631,6 @@
     });
     </script>
 
-    <!-- Bootstrap JS Bundle (dengan Popper) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    @stack('scripts')
-    ...
     @stack('scripts')
 
     <!-- Footer -->
@@ -641,8 +639,5 @@
            HAK CIPTA &copy;2025 PERPUSTAKAAN DAN KEARSIPAN PROVINSI LAMPUNG. All rights reserved.
         </small>
     </footer>
-</body>
-</html>
-
 </body>
 </html>
